@@ -1,11 +1,11 @@
 "use client";
 
 import { Drawer, DrawerItem } from "@/components/ui/Drawer";
-import { logout, getUserInfo } from "../actions/auth";
+import { logout, getUserInfo } from "../../actions/auth";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { AuthRecord } from "pocketbase";
-import FilterContext from "@contexts/FilterContext";
+import { FilterContext } from "@/app/contexts/FilterProvider";
 
 export default function AppDrawer() {
   const { title, subtitle } = useContext(FilterContext);

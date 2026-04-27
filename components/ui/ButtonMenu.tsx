@@ -21,7 +21,7 @@ export function ButtonMenuItem({
   return (
     <li
       onClick={handleClick}
-      className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+      className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-500 cursor-pointer"
     >
       {label}
     </li>
@@ -41,7 +41,7 @@ export function ButtonMenu({
 
   return (
     <MenuContext.Provider value={{ close }}>
-      <div>
+      <div className="flex">
         <button onClick={() => setIsOpen(!isOpen)}>{content}</button>
 
         {isOpen && (
@@ -50,8 +50,8 @@ export function ButtonMenu({
               className="fixed inset-0 z-10"
               onClick={() => setIsOpen(false)}
             ></div>
-            <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-xl z-20">
-              <ul className="py-2 text-gray-800">{children}</ul>
+            <div className="absolute right-0 mt-10 w-48 bg-white dark:bg-slate-800 border rounded-md shadow-xl z-20">
+              <ul className="py-2 text-gray-800 dark:text-white">{children}</ul>
             </div>
           </>
         )}

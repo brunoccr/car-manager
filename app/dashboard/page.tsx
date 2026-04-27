@@ -1,27 +1,21 @@
-"use client";
+import { Summaries } from "../components/Summaries";
+import { SummariesSkeleton } from "../components/SummariesSkeleton";
+import { Suspense } from "react";
+import DashboardMain from "./main";
 
-import { useState } from "react";
-import AppDrawer from "../components/AppDrawer";
-import FilterContext, { FilterContextDefault } from "@contexts/FilterContext";
-
-export default function Dashboard() {
-  const [subtitle, setSubtitle] = useState(FilterContextDefault.subtitle);
-  const [filterKey, setFilter] = useState(FilterContextDefault.filterKey);
+export default async function Dashboard({
+  searchParams,
+}: {
+  searchParams: Promise<{ filter?: string }>;
+}) {
+  let { filter } = await searchParams;
+  filter = filter || "seven_days";
 
   return (
-    <FilterContext
-      value={{
-        title: FilterContextDefault.title,
-        subtitle,
-        filterKey,
-        setFilter,
-        setSubtitle,
-      }}
-    >
-      <div>
-        <AppDrawer />
-        <h1>Dashboard</h1>
-      </div>
-    </FilterContext>
+    <DashboardMain>
+      <Suspense key={filter} fallback={<SummariesSkeleton />}>
+        <Summaries filter={filter} />
+      </Suspense>
+    </DashboardMain>
   );
 }

@@ -1,7 +1,7 @@
 "use server";
 
 import Image from "next/image";
-import { getActivities } from "@actions/activities";
+import { getActivities } from "@/actions/activities";
 
 export interface ActivityItemProps {
   recordId: string;
@@ -11,7 +11,7 @@ export interface ActivityItemProps {
   userId: string;
 }
 
-const ActivityItem = async (props: ActivityItemProps) => {
+async function ActivityItem(props: ActivityItemProps) {
   const avatarUrl = `/api/users/avatar/${props.userId}`;
 
   return (
@@ -40,9 +40,9 @@ const ActivityItem = async (props: ActivityItemProps) => {
       </div>
     </li>
   );
-};
+}
 
-export const ActivityList = async ({ filter }: { filter: string }) => {
+export async function ActivityList({ filter }: { filter: string }) {
   const activities = await getActivities(filter);
 
   return (
@@ -60,4 +60,4 @@ export const ActivityList = async ({ filter }: { filter: string }) => {
         ))}
     </ul>
   );
-};
+}

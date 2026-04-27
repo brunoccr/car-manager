@@ -10,7 +10,8 @@ import {
 } from "react";
 import { ButtonMenu, ButtonMenuItem } from "@components/ui/ButtonMenu";
 import { Values } from "@consts/ActivitiesFilter";
-import FilterContext from "@contexts/FilterContext";
+import { FilterContext } from "@/app/contexts/FilterProvider";
+import { useRouter } from "next/navigation";
 
 export interface DrawerProps {
   title: string;
@@ -77,9 +78,10 @@ export const Drawer = ({
   username = "[USERNAME]",
   children,
 }: DrawerProps) => {
-  const { setFilter, setSubtitle } = useContext(FilterContext);
-
+  const { setSubtitle } = useContext(FilterContext);
   const [isOpen, setIsOpen] = useState(false);
+
+  const router = useRouter();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -108,8 +110,10 @@ export const Drawer = ({
   };
 
   const handleFilter = (filterKey: string) => {
-    setFilter(filterKey);
     setSubtitle(Values[filterKey]);
+
+    router.push(`?filter=${filterKey}`);
+    router.refresh();
   };
 
   return (
@@ -136,7 +140,7 @@ export const Drawer = ({
             <span className="text-xl font-bold">{title}</span>
             <span className="text-xs text-gray-400">{subtitle}</span>
           </div>
-          <div className="md:hidden border">
+          <div className="md:hidden">
             <ButtonMenu
               content={
                 <div className="flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none relative">

@@ -1,6 +1,6 @@
 "use client";
 
-import { recoverPassword } from "@/app/actions/auth";
+import { recoverPassword } from "@/actions/auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
