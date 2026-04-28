@@ -40,7 +40,7 @@ export function ButtonMenu({
   const close = () => setIsOpen(false);
 
   return (
-    <MenuContext.Provider value={{ close }}>
+    <MenuContext value={{ close }}>
       <div className="flex">
         <button onClick={() => setIsOpen(!isOpen)}>{content}</button>
 
@@ -56,6 +56,6 @@ export function ButtonMenu({
           </>
         )}
       </div>
-    </MenuContext.Provider>
+    </MenuContext>
   );
 }
