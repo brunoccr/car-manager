@@ -3,8 +3,9 @@ export interface ValuesProps {
 }
 
 export const Values: ValuesProps = {
-  seven_days: "Últimos 7 Dias",
-  this_month: "Este Mês",
-  last_three_months: "Últimos 3 meses",
-  all: "Tudo",
+  this_month: "Este mês",
+  this_semester: "Este semestre",
+  this_year: "Este ano",
+  last_365_days: "Últimos 365 dias",
+  all: "Desde o início",
 };

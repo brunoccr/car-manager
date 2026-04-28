@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { AuthRecord } from "pocketbase";
 import { FilterContext } from "@/app/contexts/FilterProvider";
+import { CarIcon, HomeIcon, LayoutListIcon } from "lucide-react";
 
 export default function AppDrawer() {
   const { title, subtitle } = useContext(FilterContext);
@@ -23,8 +24,13 @@ export default function AppDrawer() {
 
   return (
     <Drawer title={title} subtitle={subtitle} username={userInfo?.name}>
-      <DrawerItem title="Início" route="/dashboard" />
-      <DrawerItem title="Atividades" route="/activities" />
+      <DrawerItem title="Início" route="/dashboard" icon={<HomeIcon />} />
+      <DrawerItem
+        title="Atividades"
+        route="/activities"
+        icon={<LayoutListIcon />}
+      />
+      <DrawerItem title="Garagem" route="/garage" icon={<CarIcon />} />
       <DrawerItem title="Sair" variant="button" onClick={handleLogout} />
     </Drawer>
   );

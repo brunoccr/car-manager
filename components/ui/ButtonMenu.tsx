@@ -50,7 +50,7 @@ export function ButtonMenu({
               className="fixed inset-0 z-10"
               onClick={() => setIsOpen(false)}
             ></div>
-            <div className="absolute right-0 mt-10 w-48 bg-white dark:bg-slate-800 border rounded-md shadow-xl z-20">
+            <div className="absolute right-0 mt-10 w-48 bg-white dark:bg-slate-800 rounded-md shadow-xl z-20">
               <ul className="py-2 text-gray-800 dark:text-white">{children}</ul>
             </div>
           </>

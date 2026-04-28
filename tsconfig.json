@@ -24,7 +24,8 @@
       "@actions/*": ["./actions/*"],
       "@components/*": ["./components/*"],
       "@consts/*": ["./consts/*"],
-      "@contexts/*": ["./app/contexts/*"]
+      "@contexts/*": ["./app/contexts/*"],
+      "@icons/*": ["./icons/*"]
     }
   },
   "include": [

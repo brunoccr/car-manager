@@ -2,7 +2,7 @@
 
 export function SummariesSkeleton() {
   return (
-    <div className="flex flex-col p-5 w-full gap-5">
+    <div className="flex flex-col p-5 w-full gap-5 max-w-3xl">
       <div
         role="status"
         className="flex items-center justify-center h-25 bg-slate-800 rounded-base animate-pulse rounded-2xl"

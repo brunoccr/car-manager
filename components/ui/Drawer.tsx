@@ -24,6 +24,7 @@ export interface DrawerItemProps {
   title: string;
   route?: string;
   variant?: string;
+  icon?: ReactNode | undefined;
   onClick?: MouseEventHandler<HTMLAnchorElement> | undefined;
 }
 
@@ -31,43 +32,30 @@ export const DrawerItem = ({
   title,
   route = "#",
   variant = "link",
+  icon,
   onClick,
 }: DrawerItemProps) => {
   if (variant === "link") {
     return (
-      <>
-        <a
-          href={route}
-          className="hover:text-blue-400 transition-colors hidden md:block"
-        >
+      <a
+        href={route}
+        className="w-full border-b border-slate-700 pb-2 hover:text-indigo-500"
+      >
+        <div className="flex gap-4 items-center">
+          {icon}
           {title}
-        </a>
-        <a
-          href={route}
-          className="w-full border-b border-slate-700 pb-2 hover:text-blue-400 md:hidden "
-        >
-          {title}
-        </a>
-      </>
+        </div>
+      </a>
     );
   } else if (variant === "button") {
     return (
-      <>
-        <a
-          href="#"
-          onClick={onClick}
-          className="w-full bg-blue-600 text-center py-2 rounded-lg hover:bg-blue-700 transition-colors md:hidden"
-        >
-          {title}
-        </a>
-        <a
-          href="#"
-          onClick={onClick}
-          className="hover:text-blue-400 transition-colors hidden md:block"
-        >
-          {title}
-        </a>
-      </>
+      <a
+        href="#"
+        onClick={onClick}
+        className="w-full bg-indigo-500 text-center py-2 rounded-lg hover:bg-blue-700 transition-colors"
+      >
+        {title}
+      </a>
     );
   }
 };
@@ -117,10 +105,11 @@ export const Drawer = ({
   };
 
   return (
-    <nav className="bg-white text-black dark:bg-gray-900 dark:text-white p-2">
-      <div className="container mx-auto flex justify-between items-center">
+    <nav className="bg-white text-black dark:bg-black dark:text-white p-2 pr-5 pl-5 border-b border-b-gray-600 fixed w-full z-50">
+      <div className="flex justify-between items-center">
         <div className="flex items-center gap-4 w-full">
-          <div className="md:hidden">
+          {/******** Menu Hamburguer *******/}
+          <div>
             <button
               onClick={isOpen ? closeMenu : toggleMenu}
               className="flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-50 relative"
@@ -136,11 +125,13 @@ export const Drawer = ({
               ></span>
             </button>
           </div>
+          {/******** Título e Subtítulo *******/}
           <div className="flex-1 flex flex-col">
             <span className="text-xl font-bold">{title}</span>
             <span className="text-xs text-gray-400">{subtitle}</span>
           </div>
-          <div className="md:hidden">
+          {/******** Filtro *******/}
+          <div>
             <ButtonMenu
               content={
                 <div className="flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none relative">
@@ -160,17 +151,16 @@ export const Drawer = ({
             </ButtonMenu>
           </div>
         </div>
-        <div className="hidden md:flex space-x-8">{children}</div>
       </div>
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          className="fixed inset-0 bg-black/50 z-30 "
           onClick={toggleMenu}
         ></div>
       )}
       {/********* Menu ********/}
       <div
-        className={`fixed top-0 left-0 h-full w-96 bg-slate-800 transform ${isOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-40 shadow-2xl md:hidden`}
+        className={`fixed top-0 left-0 h-full w-96 bg-slate-800 transform ${isOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-40 shadow-2xl`}
       >
         <div className="flex flex-col items-start p-8 space-y-6 mt-16 text-lg font-medium">
           <div className="flex flex-col items-center w-full">

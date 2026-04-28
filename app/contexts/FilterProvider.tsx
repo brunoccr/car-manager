@@ -13,8 +13,8 @@ export interface FilterContextProps {
 
 export const FilterContextDefault: FilterContextProps = {
   title: "Início",
-  subtitle: Values["seven_days"],
-  filterKey: "seven_days",
+  subtitle: Values["this_month"],
+  filterKey: "this_month",
   setSubtitle: () => {},
 };
 
@@ -25,7 +25,7 @@ export default function FilterProvider({
 }: {
   children: ReactNode | ReactNode[];
 }) {
-  const filterKey = useSearchParams().get("filter") ?? "seven_days";
+  const filterKey = useSearchParams().get("filter") ?? "this_month";
   const [subtitle, setSubtitle] = useState(Values[filterKey]);
 
   const contextValue = useMemo(

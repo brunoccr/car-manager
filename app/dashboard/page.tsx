@@ -1,21 +1,23 @@
-import { Summaries } from "../components/Summaries";
-import { SummariesSkeleton } from "../components/SummariesSkeleton";
+import { Summaries } from "./components/Summaries";
+import { SummariesSkeleton } from "./components/SummariesSkeleton";
 import { Suspense } from "react";
 import DashboardMain from "./main";
 
-export default async function Dashboard({
+export default async function DashboardPage({
   searchParams,
 }: {
   searchParams: Promise<{ filter?: string }>;
 }) {
   let { filter } = await searchParams;
-  filter = filter || "seven_days";
+  filter = filter || "this_month";
 
   return (
     <DashboardMain>
-      <Suspense key={filter} fallback={<SummariesSkeleton />}>
-        <Summaries filter={filter} />
-      </Suspense>
+      <div className="mt-15 w-full flex justify-center">
+        <Suspense key={filter} fallback={<SummariesSkeleton />}>
+          <Summaries filter={filter} />
+        </Suspense>
+      </div>
     </DashboardMain>
   );
 }

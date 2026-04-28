@@ -1,18 +1,23 @@
-import { ActivityList } from "@/components/ui/ActivityList";
+import { Activities } from "./components/Activities";
 import { Suspense } from "react";
-import AppDrawer from "../components/AppDrawer";
+import ActivitiesMain from "./main";
+import { ActivitiesSkeleton } from "./components/ActivitiesSkeleton";
 
-const Loading = () => {
-  return <h1>Carregando...</h1>;
-};
+export default async function ActivitiesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ filter?: string }>;
+}) {
+  let { filter } = await searchParams;
+  filter = filter || "this_month";
 
-export default function Activities() {
   return (
-    <div>
-      <AppDrawer title="Atividades" />
-      <Suspense fallback={<Loading />}>
-        <ActivityList filter="TESTE" />
-      </Suspense>
-    </div>
+    <ActivitiesMain>
+      <div className="mt-15 w-full flex justify-center">
+        <Suspense key={filter} fallback={<ActivitiesSkeleton />}>
+          <Activities filter={filter} />
+        </Suspense>
+      </div>
+    </ActivitiesMain>
   );
 }
