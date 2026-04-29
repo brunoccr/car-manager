@@ -47,7 +47,10 @@ export default function ActivityForm({
     }
   };
 
-  return record != undefined ? (
+  const canRender =
+    id === undefined || (record != undefined && vehicles.length > 0);
+
+  return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-[#111318] rounded-lg">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="text-center text-2xl/9 font-bold tracking-tight text-white">
@@ -60,6 +63,7 @@ export default function ActivityForm({
           <input type="hidden" id="id" name="id" value={id} />
           <div>
             <InputField
+              loading={!canRender}
               label="Veículo"
               name="vehicle"
               variant="combo"
@@ -71,6 +75,7 @@ export default function ActivityForm({
           </div>
           <div>
             <InputField
+              loading={!canRender}
               label="Tipo"
               name="type"
               variant="combo"
@@ -86,6 +91,7 @@ export default function ActivityForm({
           </div>
           <div>
             <InputField
+              loading={!canRender}
               label="Data"
               name="date"
               variant="date"
@@ -98,6 +104,7 @@ export default function ActivityForm({
           <div className="flex flex-row gap-5">
             {!hideFuelFields && (
               <InputField
+                loading={!canRender}
                 label="Km total"
                 name="totalKM"
                 variant="number"
@@ -110,6 +117,7 @@ export default function ActivityForm({
               />
             )}
             <InputField
+              loading={!canRender}
               label="Total pago"
               name="totalValue"
               variant="number"
@@ -124,6 +132,7 @@ export default function ActivityForm({
           <div>
             {!hideFuelFields && (
               <InputField
+                loading={!canRender}
                 label="Litros"
                 name="volume"
                 variant="number"
@@ -142,17 +151,19 @@ export default function ActivityForm({
             </div>
           )}
           <div>
-            <button
-              tabIndex={99}
-              type="submit"
-              name="intent"
-              value="save"
-              className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-            >
-              {!id ? "Salvar" : "Alterar"}
-            </button>
+            {canRender && (
+              <button
+                tabIndex={99}
+                type="submit"
+                name="intent"
+                value="save"
+                className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+              >
+                {!id ? "Salvar" : "Alterar"}
+              </button>
+            )}
           </div>
-          {id && (
+          {canRender && id && (
             <div>
               <button
                 tabIndex={99}
@@ -168,7 +179,5 @@ export default function ActivityForm({
         </form>
       </div>
     </div>
-  ) : (
-    <></>
   );
 }
