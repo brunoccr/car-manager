@@ -27,8 +27,8 @@ export const Popup = ({
         className="absolute inset-0 bg-black opacity-50"
         onClick={() => onClose(false)}
       ></div>
-      <div className="relative z-10 rounded-lg mr-5 ml-5">
-        <div className="absolute right-0 top-0 z-10">
+      <div className="relative z-10 rounded-lg mr-5 ml-5 min-w-[90%] md:min-w-96">
+        <div className="absolute right-0 top-0 z-10 ">
           <button
             onClick={() => onClose(false)}
             className="flex flex-col justify-center -mt-8 -mr-2 items-center w-8 h-8 space-y-3.5 focus:outline-none z-50 relative"

@@ -49,6 +49,8 @@ export async function createOrUpdateActivity(formData: FormData): Promise<{
 }> {
   const pb = await createServerClient();
 
+  const carId = formData.get("vehicle") as string;
+  const type = formData.get("type") as string;
   const startDate = formData.get("date") as string;
   const totalKM = formData.get("totalKM") as string;
   const totalValue = formData.get("totalValue") as string;
@@ -56,8 +58,8 @@ export async function createOrUpdateActivity(formData: FormData): Promise<{
 
   try {
     const body = {
-      car: "oicj0hinpdjng0j",
-      type: "Reabastecimento",
+      car: carId,
+      type: type,
       createdby: pb.authStore.record?.id,
       startdate: startDate.toString() + " 12:00:00Z",
       totalkm: totalKM,
