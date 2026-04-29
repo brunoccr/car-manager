@@ -7,12 +7,13 @@ export async function proxy(request: NextRequest) {
 
   const isLoggedIn = pb.authStore.isValid;
   const isAuthPage = request.nextUrl.pathname.startsWith("/login");
+  const isRootPage = request.nextUrl.pathname === "/";
 
-  if (!isLoggedIn && !isAuthPage) {
+  if (!isLoggedIn && (!isAuthPage || !isRootPage)) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (isLoggedIn && isAuthPage) {
+  if (isLoggedIn && (isAuthPage || isRootPage)) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
