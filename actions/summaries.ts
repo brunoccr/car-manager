@@ -52,7 +52,7 @@ export async function getSummaries(
     };
 
     const fuelFillType = "Reabastecimento";
-    const maintenanceType = "Manuteção";
+    const maintenanceType = "Manutenção";
 
     const consumes: number[] = [];
 
