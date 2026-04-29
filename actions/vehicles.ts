@@ -24,7 +24,7 @@ export async function getUserVehicles(): Promise<
       };
     });
 
-    if (activities.items) {
+    if (activities.items.length > 0) {
       const lastActivity = activities.items[0];
 
       const lastUsedVehicle = vehicles.find(
