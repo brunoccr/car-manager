@@ -1,4 +1,4 @@
-import { createActivity } from "@/actions/activities";
+import { createOrUpdateActivity } from "@/actions/activities";
 import { useState } from "react";
 
 const InputField = ({
@@ -45,11 +45,17 @@ const InputField = ({
   );
 };
 
-export default function ActivivityNew({ onFinish }: { onFinish: () => void }) {
+export default function ActivivityNew({
+  id,
+  onFinish,
+}: {
+  id?: string;
+  onFinish: () => void;
+}) {
   const [error, setError] = useState("");
 
   const handleSubmit = async (formData: FormData) => {
-    const result = await createActivity(formData);
+    const result = await createOrUpdateActivity(formData);
 
     if (result.success) {
       onFinish();
@@ -68,6 +74,7 @@ export default function ActivivityNew({ onFinish }: { onFinish: () => void }) {
 
       <div className="mt-10 mx-auto w-full max-w-sm">
         <form action={handleSubmit} className="space-y-6">
+          <input type="hidden" id="id" name="id" value={id} />
           <div>
             <InputField
               label="Data"

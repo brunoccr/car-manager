@@ -43,7 +43,7 @@ export async function getActivities(filter: string): Promise<RecordModel[]> {
   }
 }
 
-export async function createActivity(formData: FormData): Promise<{
+export async function createOrUpdateActivity(formData: FormData): Promise<{
   success: boolean;
   error?: string;
 }> {
