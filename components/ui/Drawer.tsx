@@ -112,16 +112,16 @@ export const Drawer = ({
           <div>
             <button
               onClick={isOpen ? closeMenu : toggleMenu}
-              className="flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none z-50 relative"
+              className="flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none z-50 relative"
             >
               <span
-                className={`block w-6 h-0.5 bg-white transition-all duration-300 ${isOpen ? "rotate-45 translate-y-2" : ""}`}
+                className={`block w-5 h-0.5 bg-white transition-all duration-300 ${isOpen ? "rotate-45 translate-y-1.5" : ""}`}
               ></span>
               <span
-                className={`block w-6 h-0.5 bg-white transition-all duration-300 ${isOpen ? "opacity-0" : "opacity-100"}`}
+                className={`block w-5 h-0.5 bg-white transition-all duration-300 ${isOpen ? "opacity-0" : "opacity-100"}`}
               ></span>
               <span
-                className={`block w-6 h-0.5 bg-white transition-all duration-300 ${isOpen ? "-rotate-45 -translate-y-2" : ""}`}
+                className={`block w-5 h-0.5 bg-white transition-all duration-300 ${isOpen ? "-rotate-45 -translate-y-1.5" : ""}`}
               ></span>
             </button>
           </div>
@@ -134,10 +134,10 @@ export const Drawer = ({
           <div>
             <ButtonMenu
               content={
-                <div className="flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none relative">
-                  <span className="block w-5 h-0.5 bg-white"></span>
-                  <span className="block w-3 h-0.5 bg-white"></span>
-                  <span className="block w-1 h-0.5 bg-white"></span>
+                <div className="flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none relative">
+                  <span className="block w-4 h-0.5 bg-white"></span>
+                  <span className="block w-2 h-0.5 bg-white"></span>
+                  <span className="block w-0.5 h-0.5 bg-white"></span>
                 </div>
               }
             >
