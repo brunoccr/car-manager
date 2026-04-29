@@ -79,8 +79,10 @@ export async function getSummaries(
       }
     });
 
-    summary.consume =
-      consumes.reduce((acc, val) => acc + val, 0) / consumes.length;
+    if (consumes.length) {
+      summary.consume =
+        consumes.reduce((acc, val) => acc + val, 0) / consumes.length;
+    }
 
     return { success: true, summary };
   } catch (err) {
