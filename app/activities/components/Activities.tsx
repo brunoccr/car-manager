@@ -1,6 +1,7 @@
 "use server";
 
 import { getActivities } from "@/actions/activities";
+import { formatDate, formatNumber } from "@components/utils/formats";
 import { FuelIcon, WrenchIcon } from "lucide-react";
 
 export interface ActivityItemProps {
@@ -30,29 +31,6 @@ async function Activity(props: ActivityItemProps) {
     isLast,
   } = props;
 
-  const formatNumber = (value: number | undefined, precision: number = 0) => {
-    if (value == undefined) {
-      return "";
-    }
-
-    return value
-      .toFixed(precision)
-      .toString()
-      .replaceAll(",", "@")
-      .replaceAll(".", ",")
-      .replaceAll("@", ".");
-  };
-
-  const formatDate = (value: string) => {
-    const refDate = new Date(value);
-
-    const strDay = refDate.getDate().toString().padStart(2, "0");
-    const strMonth = (refDate.getMonth() + 1).toString().padStart(2, "0");
-    const strYear = refDate.getFullYear();
-
-    return `${strDay}/${strMonth}/${strYear}`;
-  };
-
   return (
     <li key={recordId} className="flex flex-row">
       <div className="flex flex-col mr-5">
@@ -68,7 +46,7 @@ async function Activity(props: ActivityItemProps) {
         </div>
       </div>
       <div className="mb-10 w-full">
-        <div className="flex items-center  mb-2 h-6 justify-between font-bold">
+        <div className="flex items-center mb-2 h-6 justify-between font-bold">
           <div>{activityType}</div>
           <div className="bg-indigo-500 pr-2 pl-2 rounded-sm">{carName}</div>
         </div>
@@ -103,7 +81,7 @@ export async function Activities({ filter }: { filter: string }) {
   return (
     <ul
       role="list"
-      className="text-sm  p-5 dark:bg-black flex flex-col w-full max-w-3xl"
+      className="text-sm p-5 flex flex-col w-full max-w-3xl overflow-y-auto"
     >
       {activities &&
         activities?.map((a, i, arr) => (

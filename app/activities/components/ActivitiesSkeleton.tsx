@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { LoaderIcon } from "lucide-react";
 
 function Placeholder({ size }: { size: string }) {
   return (
@@ -18,40 +18,41 @@ function Activity({ isLast }: { isLast: boolean }) {
     <li className="flex flex-row">
       <div className="flex flex-col mr-5">
         <div className="flex justify-center">
-          <Image src="/icon-192x192.png" width={25} height={25} alt="logo" />
+          <LoaderIcon color="#6BAED5" />
         </div>
-        <div className="flex flex-col items-center h-full mt-2 mb-2">
+        <div className="flex flex-col items-center h-full mt-5 mb-5">
           <div className={`${!isLast ? "border-r" : ""} h-full`}></div>
         </div>
       </div>
-      <div className="mb-5 w-full">
-        <div className="flex items-center font-bold mb-2 h-6">
-          <Placeholder size="w-sm" />
+      <div className="mb-10 w-full">
+        <div className="flex items-center mb-2 h-6 justify-between font-bold">
+          <Placeholder size="w-30" />
+          <Placeholder size="w-30" />
         </div>
         <div>
           <div className="flex flex-col w-full gap-1 text-gray-500">
             <div className="flex flex-row justify-between w-full">
               <div>
-                <Placeholder size="w-32" />
+                <Placeholder size="w-20" />
               </div>
               <div className="text-white">
-                <Placeholder size="w-32" />
+                <Placeholder size="w-20" />
               </div>
             </div>
             <div className="flex flex-row justify-between w-full">
               <div>
-                <Placeholder size="w-32" />
+                <Placeholder size="w-20" />
               </div>
               <div>
-                <Placeholder size="w-32" />
+                <Placeholder size="w-20" />
               </div>
             </div>
             <div className="flex flex-row justify-between w-full">
               <div>
-                <Placeholder size="w-32" />
+                <Placeholder size="w-20" />
               </div>
               <div>
-                <Placeholder size="w-32" />
+                <Placeholder size="w-20" />
               </div>
             </div>
           </div>
@@ -65,7 +66,7 @@ export function ActivitiesSkeleton() {
   return (
     <ul
       role="list"
-      className="text-sm divide-y divide-white/5 p-5 dark:bg-black flex flex-col w-full max-w-3xl overflow-y-auto"
+      className="text-sm p-5 flex flex-col w-full max-w-3xl overflow-y-auto"
     >
       <Activity isLast={false} />
       <Activity isLast={false} />

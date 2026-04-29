@@ -3,11 +3,11 @@ import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Car Manager",
-    short_name: "CarManager",
+    short_name: "Car Manager",
     start_url: "/login",
     display: "standalone",
-    background_color: "#ffffff",
-    theme_color: "#000000",
+    background_color: "#111318",
+    theme_color: "#111318",
     icons: [
       {
         src: "/icon-192x192.png",
