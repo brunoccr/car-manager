@@ -49,6 +49,6 @@ jobs:
           jq '.image = "ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}"' config.json > tmp.json && mv tmp.json config.json
           jq '.version = "${{ github.event.release.tag_name }}"' config.json > tmp.json && mv tmp.json config.json
 
-          git add config.yaml
+          git add config.json
           git commit -m "Update version to ${{ github.event.release.tag_name }} on Car Manager config"
           git push
