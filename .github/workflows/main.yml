@@ -37,16 +37,18 @@ jobs:
             ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}
             ghcr.io/${{ github.repository }}:latest
 
-      #- name: Update Config on HA-Addon Repo
-      #  run: |
-      #    git config --global user.email "github-actions[bot]@users.noreply.github.com"
-      #    git config --global user.name "github-actions[bot]"
+      - name: Update Config on HA-Addon Repo
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
 
-      #    git clone https://${{ secrets.MY_PAT }}@://github.com
-      #    cd repo-destino
+          git clone https://${{ secrets.CI }}@://github.com/brunoccr/ha-addons.git
+          cd ha-addons
+          cd car-manager
 
-      #    sed -i "s|image: .*|image: ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}|g" config.yaml
+          jq '.image = "ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}"' config.json > tmp.json && mv tmp.json config.json
+          jq '.version = "${{ github.event.release.tag_name }}"' config.json > tmp.json && mv tmp.json config.json
 
-      #    git add config.yaml
-      #    git commit -m "Update version to ${{ github.event.release.tag_name }} on Car Manager config"
-      #    git push
+          git add config.yaml
+          git commit -m "Update version to ${{ github.event.release.tag_name }} on Car Manager config"
+          git push
