@@ -5,6 +5,7 @@ import { ReactNode, useState } from "react";
 import { FloatButton } from "@/components/ui/FloatButton";
 import { Popup } from "@/components/ui/Popup";
 import { useRouter } from "next/navigation";
+import VehicleForm from "./components/VehicleForm";
 
 export default function GarageMain({
   children,
@@ -26,7 +27,7 @@ export default function GarageMain({
       <FloatButton onClick={() => setModeNew(true)} />
       {modeNew && (
         <Popup onClose={() => setModeNew(false)}>
-          <></>
+          <VehicleForm onFinish={() => handleFinish()} />
         </Popup>
       )}
     </div>
