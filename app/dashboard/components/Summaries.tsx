@@ -45,7 +45,7 @@ export async function Summaries({ filter }: { filter: string }) {
           {/* Reabastecimento */}
           <div className="flex justify-between text-[0.9rem] gap-3">
             <div className="bg-[#1f382f] p-2 rounded-lg">
-              <FuelIcon color="#23af64" color="#23af64" />
+              <FuelIcon color="#23af64" />
             </div>
             <div className="flex flex-col justify-start w-full">
               <div>Reabastecimento</div>
