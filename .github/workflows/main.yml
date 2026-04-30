@@ -7,6 +7,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -33,3 +36,17 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}
             ghcr.io/${{ github.repository }}:latest
+
+      #- name: Update Config on HA-Addon Repo
+      #  run: |
+      #    git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      #    git config --global user.name "github-actions[bot]"
+
+      #    git clone https://${{ secrets.MY_PAT }}@://github.com
+      #    cd repo-destino
+
+      #    sed -i "s|image: .*|image: ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}|g" config.yaml
+
+      #    git add config.yaml
+      #    git commit -m "Update version to ${{ github.event.release.tag_name }} on Car Manager config"
+      #    git push
