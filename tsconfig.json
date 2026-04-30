@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,13 +23,27 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "@lib/*": ["./lib/*"],
-      "@actions/*": ["./actions/*"],
-      "@components/*": ["./components/*"],
-      "@consts/*": ["./consts/*"],
-      "@contexts/*": ["./app/contexts/*"],
-      "@icons/*": ["./icons/*"]
+      "@/*": [
+        "./*"
+      ],
+      "@lib/*": [
+        "./lib/*"
+      ],
+      "@actions/*": [
+        "./actions/*"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@consts/*": [
+        "./consts/*"
+      ],
+      "@contexts/*": [
+        "./app/contexts/*"
+      ],
+      "@icons/*": [
+        "./icons/*"
+      ]
     }
   },
   "include": [
@@ -34,7 +52,11 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "**/*.mts",
+    "/dist/types/**/*.ts",
+    "/dist/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
