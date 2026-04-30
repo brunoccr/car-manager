@@ -42,7 +42,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
-          git clone https://${{ secrets.CI }}@://github.com/brunoccr/ha-addons.git
+          git clone https://${{ secrets.CI }}@github.com/brunoccr/ha-addons.git
           cd ha-addons
           cd car-manager
 
