@@ -46,7 +46,6 @@ jobs:
           cd ha-addons
           cd car-manager
 
-          jq '.image = "ghcr.io/${{ github.repository }}:${{ github.event.release.tag_name }}"' config.json > tmp.json && mv tmp.json config.json
           jq '.version = "${{ github.event.release.tag_name }}"' config.json > tmp.json && mv tmp.json config.json
 
           git add config.json
