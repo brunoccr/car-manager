@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+import {
+  ChangeEventHandler,
+  MouseEventHandler,
+  useEffect,
+  useState,
+} from "react";
 
 export const InputField = ({
   label,
@@ -32,6 +37,24 @@ export const InputField = ({
   const treatedValue =
     value == null || variant === "date" ? value?.split(" ")[0] : value;
 
+  const [state, setState] = useState<string | undefined>("");
+
+  useEffect(() => {
+    (async () => {
+      setState(treatedValue);
+    })();
+  }, [treatedValue]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setState(event.target.value);
+    onChange(event.target.value);
+  };
+
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setState(event.target.value);
+    onChange(event.target.value);
+  };
+
   return (
     <div className="w-full">
       <label
@@ -47,8 +70,9 @@ export const InputField = ({
               <select
                 id={name}
                 name={name}
-                defaultValue={treatedValue}
-                onChange={(event) => onChange(event.target.value)}
+                value={state ?? ""}
+                //defaultValue={treatedValue}
+                onChange={handleSelectChange}
                 className={`${className} block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6`}
               >
                 {options &&
@@ -64,12 +88,13 @@ export const InputField = ({
                 type={variant}
                 id={name}
                 name={name}
-                onChange={(event) => onChange(event.target.value)}
+                onChange={handleChange}
                 placeholder={placeholder}
                 required={required}
                 min={min}
                 step={step}
-                defaultValue={treatedValue}
+                value={state ?? ""}
+                //defaultValue={treatedValue}
                 className={`${className} block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6`}
               />
             )}

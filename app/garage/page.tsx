@@ -1,10 +1,15 @@
-import AppDrawer from "../components/AppDrawer";
+import { Suspense } from "react";
+import GarageMain from "./main";
+import { Vehicles } from "./components/Vehicles";
 
 export default function Garage() {
   return (
-    <>
-      <AppDrawer />
-      <h1>Garage</h1>
-    </>
+    <GarageMain>
+      <div className="mt-15 w-full flex justify-center">
+        <Suspense fallback={<></>}>
+          <Vehicles />
+        </Suspense>
+      </div>
+    </GarageMain>
   );
 }

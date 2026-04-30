@@ -1,12 +1,11 @@
 "use client";
 
-import { createOrUpdateActivity, getActivity } from "@/actions/activities";
-import { getUserVehicles } from "@actions/vehicles";
-import { useEffect, useState } from "react";
+import { createOrUpdateVehicle, getVehicle } from "@/actions/vehicles";
 import { RecordModel } from "pocketbase";
 import { InputField } from "@/components/ui/InputField";
+import { useEffect, useState } from "react";
 
-export default function ActivityForm({
+export default function VehicleForm({
   id,
   onFinish,
 }: {
@@ -14,31 +13,20 @@ export default function ActivityForm({
   onFinish: () => void;
 }) {
   const [error, setError] = useState("");
-  const [hideFuelFields, setHideFuelFields] = useState(false);
-  const [vehicles, setVehicles] = useState<{ label: string; value: string }[]>(
-    [],
-  );
   const [record, setRecord] = useState<RecordModel | null>(null);
-
-  const handleChangeType = (type: string) => {
-    setHideFuelFields(type !== "Reabastecimento");
-  };
 
   useEffect(() => {
     (async () => {
-      const vehicles = await getUserVehicles();
-      setVehicles(vehicles);
-
       if (id) {
-        const activity = await getActivity(id);
-        setRecord(activity);
-        handleChangeType(activity?.type);
+        const vehicle = await getVehicle(id);
+        console.log(vehicle);
+        setRecord(vehicle);
       }
     })();
   }, [id]);
 
   const handleSubmit = async (formData: FormData) => {
-    const result = await createOrUpdateActivity(formData);
+    const result = await createOrUpdateVehicle(formData);
 
     if (result.success) {
       onFinish();
@@ -47,103 +35,77 @@ export default function ActivityForm({
     }
   };
 
-  const canRender =
-    id === undefined || (record != undefined && vehicles.length > 0);
+  const canRender = id === undefined || record != undefined;
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-[#111318] rounded-lg">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="text-center text-2xl/9 font-bold tracking-tight text-white">
-          {!id ? "Nova" : "Alteração de"} Atividade
+          {!id ? "Novo" : "Alteração de"} Veículo
         </h2>
       </div>
 
       <div className="mt-10 mx-auto w-full max-w-sm">
         <form action={handleSubmit} className="space-y-6">
-          <input type="hidden" id="id" name="id" value={id ?? ""} />
+          <input
+            type="hidden"
+            id="id"
+            name="id"
+            value={record?.expand?.car.id ?? ""}
+          />
           <div>
             <InputField
               loading={!canRender}
-              label="Veículo"
-              name="vehicle"
-              variant="combo"
-              tabIndex={1}
-              required
-              options={vehicles}
-              value={record?.car?.id}
-            />
-          </div>
-          <div>
-            <InputField
-              loading={!canRender}
-              label="Tipo"
-              name="type"
-              variant="combo"
+              label="Apelido"
+              name="alias"
               tabIndex={2}
               required
-              value={record?.type}
-              onChange={handleChangeType}
-              options={[
-                { label: "Reabastecimento", value: "Reabastecimento" },
-                { label: "Manutenção", value: "Manutenção" },
-              ]}
-            />
-          </div>
-          <div>
-            <InputField
-              loading={!canRender}
-              label="Data"
-              name="date"
-              variant="date"
-              tabIndex={3}
-              required
-              value={record?.startdate}
-              placeholder="00/00/0000"
+              value={record?.expand?.car?.alias}
+              placeholder="Toyota Rav4"
             />
           </div>
           <div className="flex flex-row gap-5">
-            {!hideFuelFields && (
-              <InputField
-                loading={!canRender}
-                label="Km total"
-                name="totalKM"
-                variant="number"
-                tabIndex={4}
-                placeholder="000000"
-                value={record?.totalkm}
-                required
-                min="1"
-                step="1"
-              />
-            )}
             <InputField
               loading={!canRender}
-              label="Total pago"
-              name="totalValue"
-              variant="number"
-              tabIndex={5}
-              value={record?.totalPaid}
+              label="Marca"
+              name="brand"
+              tabIndex={2}
               required
-              placeholder="R$ 0,00"
-              min="1"
-              step="0.01"
+              value={record?.expand?.car?.brand}
+              placeholder="Toyota"
+            />
+            <InputField
+              loading={!canRender}
+              label="Modelo"
+              name="model"
+              tabIndex={2}
+              required
+              value={record?.expand?.car?.model}
+              placeholder="Rav4"
             />
           </div>
-          <div>
-            {!hideFuelFields && (
-              <InputField
-                loading={!canRender}
-                label="Litros"
-                name="volume"
-                variant="number"
-                value={record?.totalVolume}
-                tabIndex={6}
-                required
-                placeholder="0,00"
-                min="1"
-                step="0.01"
-              />
-            )}
+          <div className="flex flex-row gap-5">
+            <InputField
+              loading={!canRender}
+              label="Ano"
+              name="year"
+              variant="number"
+              tabIndex={4}
+              placeholder="0000"
+              value={record?.expand?.car?.year}
+              required
+              min="1"
+              step="1"
+            />
+            <InputField
+              loading={!canRender}
+              label="Placa"
+              name="plate"
+              tabIndex={2}
+              required
+              value={record?.expand?.car?.plate}
+              placeholder="AAA-0A00"
+            />
           </div>
           {error && (
             <div className="mt-5 flex items-center flex-col text-red-700">

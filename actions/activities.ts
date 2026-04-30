@@ -91,7 +91,6 @@ export async function createOrUpdateActivity(formData: FormData): Promise<{
       if (!isExclude) {
         await pb.collection("activities").update(id, body);
       } else {
-        console.log(id);
         await pb.collection("activities").delete(id);
       }
     } else {
@@ -101,6 +100,9 @@ export async function createOrUpdateActivity(formData: FormData): Promise<{
     return { success: true };
   } catch (err) {
     console.log(err);
-    return { success: false, error: "Erro ao tentar criar atividade!" };
+    return {
+      success: false,
+      error: "Erro ao tentar criar/atualizar atividade!",
+    };
   }
 }
