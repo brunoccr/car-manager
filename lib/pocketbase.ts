@@ -9,7 +9,6 @@ export async function createServerClient() {
 
   if (authCookie) {
     pb.authStore.loadFromCookie(authCookie.value, authCookie.name);
-    await pb.collection('users').authRefresh();
   }
 
   pb.authStore.onChange(() => {
