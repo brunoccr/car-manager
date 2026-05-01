@@ -16,9 +16,9 @@ export async function createServerClient() {
       cookieStore.set(
         "pb_auth",
         pb.authStore.exportToCookie({ 
-           httpOnly: true, 
+           httpOnly: false, 
            secure: true, 
-           sameSite: "lax", 
+           sameSite: "Lax", 
            path: "/" 
         }),
       );
