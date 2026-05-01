@@ -5,6 +5,12 @@ import { createServerClient } from "@lib/pocketbase";
 export async function proxy(request: NextRequest) {
   const pb = await createServerClient();
 
+  try {
+    await pb.collection("users").authRefresh();
+  } catch {
+    pb.authStore.clear();
+  }
+
   const isLoggedIn = pb.authStore.isValid;
   const isAuthPage = request.nextUrl.pathname.startsWith("/login");
   const isRootPage = request.nextUrl.pathname === "/";
@@ -15,12 +21,6 @@ export async function proxy(request: NextRequest) {
 
   if (isLoggedIn && (isAuthPage || isRootPage)) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
-
-  try {
-    await pb.collection("users").authRefresh();
-  } catch {
-    pb.authStore.clear();
   }
 
   return NextResponse.next();
