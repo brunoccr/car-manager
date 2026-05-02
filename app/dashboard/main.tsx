@@ -3,6 +3,7 @@
 import FilterProvider from "@/app/contexts/FilterProvider";
 import AppDrawer from "../components/AppDrawer";
 import { ReactNode } from "react";
+import { Values } from "@/consts/ActivitiesFilter";
 
 export default function DashboardMain({
   children,
@@ -12,7 +13,7 @@ export default function DashboardMain({
   return (
     <FilterProvider>
       <div>
-        <AppDrawer />
+        <AppDrawer title="Início" subtitle={Values["this_month"]} />
         {children}
       </div>
     </FilterProvider>

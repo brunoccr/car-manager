@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ["192.168.15.67", "car.brr.tec.br"],
+  allowedDevOrigins: ["192.168.15.67", "car-dev.brr.tec.br"],
   distDir: "/dist",
   output: "standalone",
   headers: async () => {

@@ -1,22 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import {
-  MouseEventHandler,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { MouseEventHandler, ReactNode, useEffect, useState } from "react";
 import { ButtonMenu, ButtonMenuItem } from "@components/ui/ButtonMenu";
 import { Values } from "@consts/ActivitiesFilter";
-import { FilterContext } from "@/app/contexts/FilterProvider";
 import { useRouter } from "next/navigation";
 
 export interface DrawerProps {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   username: string;
+  showFilter?: boolean;
   children: ReactNode | ReactNode[];
 }
 
@@ -65,8 +59,9 @@ export const Drawer = ({
   subtitle,
   username = "[USERNAME]",
   children,
+  showFilter = true,
 }: DrawerProps) => {
-  const { setSubtitle } = useContext(FilterContext);
+  const [stateSubtitle, setSubtitle] = useState(subtitle);
   const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
@@ -127,29 +122,39 @@ export const Drawer = ({
           </div>
           {/******** Título e Subtítulo *******/}
           <div className="flex-1 flex flex-col">
-            <span className="text-base font-bold">{title}</span>
-            <span className="text-xs text-gray-400">{subtitle}</span>
+            <span
+              className={`font-bold { stateSubtitle ? "text-base" : "text-2xl" }`}
+            >
+              {title}
+            </span>
+            <span
+              className={`text-xs text-gray-400 {!stateSubtitle ? "hidden" : ""} `}
+            >
+              {stateSubtitle}
+            </span>
           </div>
           {/******** Filtro *******/}
-          <div>
-            <ButtonMenu
-              content={
-                <div className="flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none relative">
-                  <span className="block w-5 h-0.5 bg-white"></span>
-                  <span className="block w-3 h-0.5 bg-white"></span>
-                  <span className="block w-1 h-0.5 bg-white"></span>
-                </div>
-              }
-            >
-              {Object.keys(Values).map((k) => (
-                <ButtonMenuItem
-                  key={k}
-                  label={Values[k]}
-                  onClick={() => handleFilter(k)}
-                />
-              ))}
-            </ButtonMenu>
-          </div>
+          {showFilter && (
+            <div>
+              <ButtonMenu
+                content={
+                  <div className="flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none relative">
+                    <span className="block w-5 h-0.5 bg-white"></span>
+                    <span className="block w-3 h-0.5 bg-white"></span>
+                    <span className="block w-1 h-0.5 bg-white"></span>
+                  </div>
+                }
+              >
+                {Object.keys(Values).map((k) => (
+                  <ButtonMenuItem
+                    key={k}
+                    label={Values[k]}
+                    onClick={() => handleFilter(k)}
+                  />
+                ))}
+              </ButtonMenu>
+            </div>
+          )}
         </div>
       </div>
       {isOpen && (

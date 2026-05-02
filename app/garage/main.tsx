@@ -6,6 +6,7 @@ import { FloatButton } from "@/components/ui/FloatButton";
 import { Popup } from "@/components/ui/Popup";
 import { useRouter } from "next/navigation";
 import VehicleForm from "./components/VehicleForm";
+import { Values } from "@/consts/ActivitiesFilter";
 
 export default function GarageMain({
   children,
@@ -22,7 +23,7 @@ export default function GarageMain({
 
   return (
     <div>
-      <AppDrawer />
+      <AppDrawer title="Garagem" showFilter={false} />
       <div className="flex flex-col items-center">{children}</div>
       <FloatButton onClick={() => setModeNew(true)} />
       {modeNew && (

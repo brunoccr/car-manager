@@ -1,21 +1,14 @@
 "use client";
 
-import { Values } from "@/consts/ActivitiesFilter";
-import { createContext, ReactNode, useMemo, useState } from "react";
+import { createContext, ReactNode, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
 export interface FilterContextProps {
-  title: string;
-  subtitle: string;
   filterKey: string;
-  setSubtitle: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const FilterContextDefault: FilterContextProps = {
-  title: "Início",
-  subtitle: Values["this_month"],
   filterKey: "this_month",
-  setSubtitle: () => {},
 };
 
 export const FilterContext = createContext(FilterContextDefault);
@@ -26,16 +19,12 @@ export default function FilterProvider({
   children: ReactNode | ReactNode[];
 }) {
   const filterKey = useSearchParams().get("filter") ?? "this_month";
-  const [subtitle, setSubtitle] = useState(Values[filterKey]);
 
   const contextValue = useMemo(
     () => ({
-      title: FilterContextDefault.title,
-      subtitle,
       filterKey,
-      setSubtitle,
     }),
-    [subtitle, filterKey],
+    [filterKey],
   );
 
   return <FilterContext value={contextValue}>{children}</FilterContext>;

@@ -7,6 +7,7 @@ import { ReactNode, useState } from "react";
 import { FloatButton } from "@/components/ui/FloatButton";
 import { Popup } from "@/components/ui/Popup";
 import { useRouter } from "next/navigation";
+import { Values } from "@/consts/ActivitiesFilter";
 
 export default function ActivitiesMain({
   children,
@@ -24,7 +25,7 @@ export default function ActivitiesMain({
   return (
     <FilterProvider>
       <div>
-        <AppDrawer />
+        <AppDrawer title="Atividades" subtitle={Values["this_month"]} />
         <div className="flex flex-col items-center">{children}</div>
         <FloatButton onClick={() => setModeNew(true)} />
         {modeNew && (
