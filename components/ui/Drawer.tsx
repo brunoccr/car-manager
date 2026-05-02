@@ -181,6 +181,9 @@ export const Drawer = ({
           </div>
           {children}
         </div>
+        <div className="flex justify-center w-full text-base">
+          {process.env.NEXT_PUBLIC_APP_VERSION}
+        </div>
       </div>
     </nav>
   );

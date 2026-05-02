@@ -31,6 +31,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          build-args: |
+            APP_VERSION=${{ github.event.release.tag_name }}
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
