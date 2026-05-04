@@ -7,10 +7,12 @@ import { Popup } from "@/components/ui/Popup";
 import VehicleForm from "./VehicleForm";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ShareForm } from "./ShareForm";
 
 export function VehiclesList({ items }: { items: RecordModel[] }) {
   const [recordId, setRecordId] = useState("");
   const [editMode, setEditMode] = useState(false);
+  const [shareMode, setShareMode] = useState(false);
 
   const router = useRouter();
 
@@ -19,8 +21,20 @@ export function VehiclesList({ items }: { items: RecordModel[] }) {
     setEditMode(true);
   };
 
-  const handleFinish = () => {
+  const handleEditFinish = () => {
     setEditMode(false);
+    router.refresh();
+  };
+
+  const handleShare = (id: string) => {
+    console.log(id);
+    setRecordId(id);
+    setEditMode(false);
+    setShareMode(true);
+  };
+
+  const handleShareFinish = () => {
+    setShareMode(false);
     router.refresh();
   };
 
@@ -28,7 +42,16 @@ export function VehiclesList({ items }: { items: RecordModel[] }) {
     <>
       {editMode && (
         <Popup onClose={() => setEditMode(false)}>
-          <VehicleForm id={recordId} onFinish={() => handleFinish()} />
+          <VehicleForm
+            id={recordId}
+            onShare={handleShare}
+            onFinish={() => handleEditFinish()}
+          />
+        </Popup>
+      )}
+      {shareMode && (
+        <Popup onClose={() => setShareMode(false)}>
+          <ShareForm id={recordId} onFinish={() => handleShareFinish()} />
         </Popup>
       )}
       <ul

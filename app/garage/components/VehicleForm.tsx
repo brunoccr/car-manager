@@ -19,9 +19,11 @@ const Placeholder = () => {
 export default function VehicleForm({
   id,
   onFinish,
+  onShare,
 }: {
   id?: string;
   onFinish: () => void;
+  onShare?: (id: string) => void;
 }) {
   const [error, setError] = useState("");
   const [record, setRecord] = useState<RecordModel | null>(null);
@@ -30,7 +32,6 @@ export default function VehicleForm({
     (async () => {
       if (id) {
         const vehicle = await getVehicle(id);
-        console.log(vehicle);
         setRecord(vehicle);
       }
     })();
@@ -47,6 +48,7 @@ export default function VehicleForm({
   };
 
   const canRender = id === undefined || record != undefined;
+  const isOwner = record != undefined && record.type === "owner";
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-[#111318] rounded-lg">
@@ -123,20 +125,37 @@ export default function VehicleForm({
               {error}
             </div>
           )}
-          <div>
-            {canRender ? (
-              <button
-                tabIndex={99}
-                type="submit"
-                name="intent"
-                value="save"
-                className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-              >
-                {!id ? "Salvar" : "Alterar"}
-              </button>
-            ) : (
-              <Placeholder />
-            )}
+          <div className="flex gap-5">
+            <div className="w-full">
+              {canRender ? (
+                <button
+                  tabIndex={99}
+                  type="submit"
+                  name="intent"
+                  value="save"
+                  className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                >
+                  {!id ? "Salvar" : "Alterar"}
+                </button>
+              ) : (
+                <Placeholder />
+              )}
+            </div>
+            <div className="w-full">
+              {canRender && isOwner ? (
+                <button
+                  tabIndex={99}
+                  onClick={() =>
+                    onShare && onShare(record?.expand?.car.id || "")
+                  }
+                  className="flex w-full justify-center rounded-md bg-green-500 px-3 py-1.5 text-sm/6 font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                >
+                  Compartilhar
+                </button>
+              ) : (
+                <Placeholder />
+              )}
+            </div>
           </div>
           {canRender ? (
             id && (

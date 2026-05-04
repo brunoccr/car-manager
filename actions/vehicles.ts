@@ -3,6 +3,53 @@
 import { createServerClient } from "@/lib/pocketbase";
 import { RecordModel } from "pocketbase";
 
+export async function createShareVehicle(formData: FormData) {
+  const pb = await createServerClient();
+
+  const id = formData.get("id") as string;
+  const email = formData.get("email") as string;
+
+  console.log("id", id);
+  console.log("email", email);
+
+  try {
+    const users = await pb.collection("users").getList(1, 1, {
+      filter: pb.filter("email = {:email}", { email }),
+    });
+
+    if (users.totalItems == 0) {
+      return { success: false, error: "Usuário não encontrado!" };
+    }
+
+    const userId = users.items[0].id;
+
+    const relations = await pb.collection("relations").getList(1, 1, {
+      filter: pb.filter("car = {:car} && user = {:user}", {
+        car: id,
+        user: userId,
+      }),
+    });
+
+    if (relations.totalItems > 0) {
+      return { success: false, error: "Usuário já tem acesso ao Veículo!" };
+    }
+
+    const body = {
+      active: false,
+      type: "invited",
+      user: userId,
+      car: id,
+    };
+
+    await pb.collection("relations").create(body);
+
+    return { success: true };
+  } catch (err) {
+    console.error(err);
+    return { success: false, error: "Erro ao compartilhar!" };
+  }
+}
+
 export async function acceptInvice(
   id: string,
 ): Promise<{ success: boolean; error?: string }> {

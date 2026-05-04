@@ -1,9 +1,4 @@
-import {
-  ChangeEventHandler,
-  MouseEventHandler,
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
 export const InputField = ({
   label,
@@ -23,7 +18,7 @@ export const InputField = ({
   label: string;
   name: string;
   className?: string;
-  loading: boolean;
+  loading?: boolean;
   variant?: string;
   min?: string;
   step?: string;
