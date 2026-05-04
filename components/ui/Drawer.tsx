@@ -100,8 +100,8 @@ export const Drawer = ({
   };
 
   return (
-    <nav className="bg-white text-black dark:bg-[#111318] dark:text-white p-2 pr-5 pl-5 border-b border-b-gray-800 fixed w-full z-50">
-      <div className="flex justify-between items-center">
+    <nav className="flex bg-white text-black dark:bg-[#111318] h-14 dark:text-white p-2 pr-5 pl-5 border-b border-b-gray-800 fixed w-full z-50 ">
+      <div className="flex justify-between items-center w-full">
         <div className="flex items-center gap-4 w-full">
           {/******** Menu Hamburguer *******/}
           <div>
@@ -123,12 +123,12 @@ export const Drawer = ({
           {/******** Título e Subtítulo *******/}
           <div className="flex-1 flex flex-col">
             <span
-              className={`font-bold { stateSubtitle ? "text-base" : "text-2xl" }`}
+              className={`font-bold ${stateSubtitle ? "text-base" : "text-xl"}`}
             >
               {title}
             </span>
             <span
-              className={`text-xs text-gray-400 {!stateSubtitle ? "hidden" : ""} `}
+              className={`text-xs text-gray-400 ${!stateSubtitle ? "hidden" : ""} `}
             >
               {stateSubtitle}
             </span>

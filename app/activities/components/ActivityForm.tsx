@@ -6,6 +6,22 @@ import { useEffect, useState } from "react";
 import { RecordModel } from "pocketbase";
 import { InputField } from "@/components/ui/InputField";
 
+const newDate = ((now: Date) =>
+  `${now.getFullYear()}-${now.getMonth().toString().padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")} 12:00:00`)(
+  new Date(),
+);
+
+const Placeholder = () => {
+  return (
+    <div
+      role="status"
+      className="flex flex-1 items-center p-3 h-10 bg-[#1e2024] rounded-base rounded-lg gap-3 animate-pulse"
+    >
+      <span className="sr-only">Loading...</span>
+    </div>
+  );
+};
+
 export default function ActivityForm({
   id,
   onFinish,
@@ -97,7 +113,7 @@ export default function ActivityForm({
               variant="date"
               tabIndex={3}
               required
-              value={record?.startdate}
+              value={record?.startdate ?? newDate}
               placeholder="00/00/0000"
             />
           </div>
@@ -151,7 +167,7 @@ export default function ActivityForm({
             </div>
           )}
           <div>
-            {canRender && (
+            {canRender ? (
               <button
                 tabIndex={99}
                 type="submit"
@@ -161,20 +177,26 @@ export default function ActivityForm({
               >
                 {!id ? "Salvar" : "Alterar"}
               </button>
+            ) : (
+              <Placeholder />
             )}
           </div>
-          {canRender && id && (
-            <div>
-              <button
-                tabIndex={99}
-                type="submit"
-                name="intent"
-                value="exclude"
-                className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-              >
-                Excluir
-              </button>
-            </div>
+          {canRender ? (
+            id && (
+              <div>
+                <button
+                  tabIndex={99}
+                  type="submit"
+                  name="intent"
+                  value="exclude"
+                  className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                >
+                  Excluir
+                </button>
+              </div>
+            )
+          ) : (
+            <Placeholder />
           )}
         </form>
       </div>

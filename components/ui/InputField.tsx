@@ -102,7 +102,7 @@ export const InputField = ({
         ) : (
           <div
             role="status"
-            className="flex flex-1 items-center p-3 h-2 bg-[#1e2024] rounded-base rounded-lg gap-3 animate-pulse"
+            className="flex flex-1 items-center p-3 h-8 bg-[#1e2024] rounded-base rounded-lg gap-3 animate-pulse"
           >
             <span className="sr-only">Loading...</span>
           </div>
