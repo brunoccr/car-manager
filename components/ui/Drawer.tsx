@@ -165,7 +165,7 @@ export const Drawer = ({
       )}
       {/********* Menu ********/}
       <div
-        className={`fixed top-0 left-0 h-full w-96 max-w-[90%] bg-[#111318] transform ${isOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-40 shadow-2xl`}
+        className={`flex flex-col fixed top-0 left-0 h-full w-96 max-w-[90%] bg-[#111318] transform ${isOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out z-40 shadow-2xl`}
       >
         <div className="flex flex-col items-start p-8 space-y-6 mt-16 text-lg font-medium">
           <div className="flex flex-col items-center w-full">
@@ -181,7 +181,7 @@ export const Drawer = ({
           </div>
           {children}
         </div>
-        <div className="flex justify-center w-full text-base">
+        <div className="flex flex-row flex-1 justify-center items-end pb-10 w-full text-sm/6">
           {process.env.NEXT_PUBLIC_APP_VERSION}
         </div>
       </div>
