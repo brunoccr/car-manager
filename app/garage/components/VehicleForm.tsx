@@ -133,7 +133,7 @@ export default function VehicleForm({
                   type="submit"
                   name="intent"
                   value="save"
-                  className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                  className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
                   {!id ? "Salvar" : "Alterar"}
                 </button>
@@ -141,21 +141,23 @@ export default function VehicleForm({
                 <Placeholder />
               )}
             </div>
-            <div className="w-full">
-              {canRender && isOwner ? (
-                <button
-                  tabIndex={99}
-                  onClick={() =>
-                    onShare && onShare(record?.expand?.car.id || "")
-                  }
-                  className="flex w-full justify-center rounded-md bg-green-500 px-3 py-1.5 text-sm/6 font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                >
-                  Compartilhar
-                </button>
-              ) : (
-                <Placeholder />
-              )}
-            </div>
+            {isOwner && (
+              <div className="w-full">
+                {canRender ? (
+                  <button
+                    tabIndex={99}
+                    onClick={() =>
+                      onShare && onShare(record?.expand?.car.id || "")
+                    }
+                    className="flex w-full justify-center rounded-md bg-green-500 px-3 py-1.5 text-sm/6 font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2"
+                  >
+                    Compartilhar
+                  </button>
+                ) : (
+                  <Placeholder />
+                )}
+              </div>
+            )}
           </div>
           {canRender ? (
             id && (
@@ -165,7 +167,7 @@ export default function VehicleForm({
                   type="submit"
                   name="intent"
                   value="exclude"
-                  className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                  className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2"
                 >
                   Excluir
                 </button>
