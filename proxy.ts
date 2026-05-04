@@ -7,8 +7,6 @@ export async function proxy(request: NextRequest) {
 
   const isRootPage = request.nextUrl.pathname === "/";
 
-  console.log("isRootPage", isRootPage);
-
   if (isRootPage) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
@@ -21,9 +19,6 @@ export async function proxy(request: NextRequest) {
 
   const isLoggedIn = pb.authStore.isValid;
   const isAuthPage = request.nextUrl.pathname.startsWith("/login");
-
-  console.log("isLoggedIn", isLoggedIn);
-  console.log("isAuthPage", isAuthPage);
 
   if (!isLoggedIn && !isAuthPage) {
     return NextResponse.redirect(new URL("/login", request.url));
