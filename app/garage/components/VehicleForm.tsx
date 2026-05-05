@@ -4,17 +4,7 @@ import { createOrUpdateVehicle, getVehicle } from "@/actions/vehicles";
 import { RecordModel } from "pocketbase";
 import { InputField } from "@/components/ui/InputField";
 import { useEffect, useState } from "react";
-
-const Placeholder = () => {
-  return (
-    <div
-      role="status"
-      className="flex flex-1 items-center p-3 h-10 bg-[#1e2024] rounded-base rounded-lg gap-3 animate-pulse"
-    >
-      <span className="sr-only">Loading...</span>
-    </div>
-  );
-};
+import { SaveIcon, Share2Icon, TrashIcon } from "lucide-react";
 
 export default function VehicleForm({
   id,
@@ -52,12 +42,6 @@ export default function VehicleForm({
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-[#111318] rounded-lg">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="text-center text-2xl/9 font-bold tracking-tight text-white">
-          {!id ? "Novo" : "Alteração de"} Veículo
-        </h2>
-      </div>
-
       <div className="mt-10 mx-auto w-full max-w-sm">
         <form action={handleSubmit} className="space-y-6">
           <input
@@ -125,57 +109,43 @@ export default function VehicleForm({
               {error}
             </div>
           )}
-          <div className="flex gap-5">
-            <div className="w-full">
-              {canRender ? (
-                <button
-                  tabIndex={99}
-                  type="submit"
-                  name="intent"
-                  value="save"
-                  className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2"
-                >
-                  {!id ? "Salvar" : "Alterar"}
-                </button>
-              ) : (
-                <Placeholder />
-              )}
-            </div>
-            {isOwner && (
-              <div className="w-full">
-                {canRender ? (
-                  <button
-                    tabIndex={99}
-                    onClick={() =>
-                      onShare && onShare(record?.expand?.car.id || "")
-                    }
-                    className="flex w-full justify-center rounded-md bg-green-500 px-3 py-1.5 text-sm/6 font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2"
-                  >
-                    Compartilhar
-                  </button>
-                ) : (
-                  <Placeholder />
-                )}
-              </div>
+
+          {/****** Float Buttons *******/}
+          <div className="flex flex-col gap-5 fixed bottom-6 right-6 rounded-2xl shadow-lg z-40">
+            {canRender && (
+              <button
+                tabIndex={99}
+                type="submit"
+                name="intent"
+                value="save"
+                className="flex justify-center rounded-2xl shadow-lg p-4 bg-indigo-500"
+              >
+                <SaveIcon />
+              </button>
+            )}
+
+            {isOwner && canRender && (
+              <button
+                tabIndex={99}
+                onClick={() => onShare && onShare(record?.expand?.car.id || "")}
+                className="flex justify-center rounded-2xl shadow-lg p-4 bg-green-500"
+              >
+                <Share2Icon />
+              </button>
+            )}
+
+            {canRender && id && (
+              <button
+                tabIndex={99}
+                type="submit"
+                name="intent"
+                value="exclude"
+                className="flex justify-center rounded-2xl shadow-lg p-4 bg-red-600"
+              >
+                <TrashIcon />
+              </button>
             )}
           </div>
-          {canRender ? (
-            id && (
-              <div>
-                <button
-                  tabIndex={99}
-                  type="submit"
-                  name="intent"
-                  value="exclude"
-                  className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2"
-                >
-                  Excluir
-                </button>
-              </div>
-            )
-          ) : (
-            <Placeholder />
-          )}
         </form>
       </div>
     </div>

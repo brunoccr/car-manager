@@ -2,7 +2,7 @@
 
 import { RecordModel } from "pocketbase";
 import { Activity } from "./Activity";
-import { Popup } from "@/components/ui/Popup";
+import { Popup } from "@/components/ui/PopupNew";
 
 import ActivityForm from "./ActivityForm";
 import { useState } from "react";
@@ -27,7 +27,10 @@ export function ActivityList({ items }: { items: RecordModel[] }) {
   return (
     <>
       {editMode && (
-        <Popup onClose={() => setEditMode(false)}>
+        <Popup
+          title={`${!recordId ? "Nova" : "Alteração de"} Atividade`}
+          onBack={() => setEditMode(false)}
+        >
           <ActivityForm id={recordId} onFinish={() => handleFinish()} />
         </Popup>
       )}

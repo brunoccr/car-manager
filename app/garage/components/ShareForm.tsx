@@ -2,6 +2,7 @@
 
 import { createShareVehicle } from "@/actions/vehicles";
 import { InputField } from "@/components/ui/InputField";
+import { Share2Icon } from "lucide-react";
 import { useState } from "react";
 
 export function ShareForm({
@@ -25,12 +26,6 @@ export function ShareForm({
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-[#111318] rounded-lg">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="text-center text-2xl/9 font-bold tracking-tight text-white">
-          Compartilhamento de Veículo
-        </h2>
-      </div>
-
       <div className="mt-10 mx-auto w-full max-w-sm">
         <form action={handleSubmit} className="space-y-6">
           <input type="hidden" id="id" name="id" value={id ?? ""} />
@@ -48,18 +43,17 @@ export function ShareForm({
               {error}
             </div>
           )}
-          <div className="flex gap-5">
-            <div className="w-full">
-              <button
-                tabIndex={99}
-                type="submit"
-                name="intent"
-                value="save"
-                className="flex w-full justify-center rounded-md bg-green-500 px-3 py-1.5 text-sm/6 font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2"
-              >
-                Compartilhar
-              </button>
-            </div>
+          {/****** Float Buttons *******/}
+          <div className="flex flex-col gap-5 fixed bottom-6 right-6 rounded-2xl shadow-lg z-40">
+            <button
+              tabIndex={99}
+              type="submit"
+              name="intent"
+              value="save"
+              className="flex justify-center rounded-2xl shadow-lg p-4 bg-green-500"
+            >
+              <Share2Icon />
+            </button>
           </div>
         </form>
       </div>

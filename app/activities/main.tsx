@@ -5,7 +5,7 @@ import AppDrawer from "../components/AppDrawer";
 import ActivityForm from "./components/ActivityForm";
 import { ReactNode, useState } from "react";
 import { FloatButton } from "@/components/ui/FloatButton";
-import { Popup } from "@/components/ui/Popup";
+import { Popup } from "@/components/ui/PopupNew";
 import { useRouter } from "next/navigation";
 import { Values } from "@/consts/ActivitiesFilter";
 
@@ -29,7 +29,7 @@ export default function ActivitiesMain({
         <div className="flex flex-col items-center">{children}</div>
         <FloatButton onClick={() => setModeNew(true)} />
         {modeNew && (
-          <Popup onClose={() => setModeNew(false)}>
+          <Popup title="Nova Atividade" onBack={() => setModeNew(false)}>
             <ActivityForm onFinish={() => handleFinish()} />
           </Popup>
         )}

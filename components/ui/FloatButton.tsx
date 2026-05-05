@@ -4,7 +4,7 @@ export const FloatButton = ({ onClick }: { onClick: () => void }) => {
   return (
     <button
       onClick={onClick}
-      className="fixed bottom-6 right-6 bg-indigo-500 text-white p-4 rounded-2xl shadow-lg transition-all active:scale-95 z-50"
+      className="fixed bottom-6 right-6 bg-indigo-500 text-white p-4 rounded-2xl shadow-lg transition-all active:scale-95 z-40"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

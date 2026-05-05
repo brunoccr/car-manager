@@ -3,7 +3,7 @@
 import AppDrawer from "../components/AppDrawer";
 import { ReactNode, useState } from "react";
 import { FloatButton } from "@/components/ui/FloatButton";
-import { Popup } from "@/components/ui/Popup";
+import { Popup } from "@/components/ui/PopupNew";
 import { useRouter } from "next/navigation";
 import VehicleForm from "./components/VehicleForm";
 
@@ -26,7 +26,7 @@ export default function GarageMain({
       <div className="flex flex-col items-center">{children}</div>
       <FloatButton onClick={() => setModeNew(true)} />
       {modeNew && (
-        <Popup onClose={() => setModeNew(false)}>
+        <Popup title="Novo Veículo" onClose={() => setModeNew(false)}>
           <VehicleForm onFinish={() => handleFinish()} />
         </Popup>
       )}

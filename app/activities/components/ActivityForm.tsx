@@ -5,22 +5,12 @@ import { getUserVehicles } from "@actions/vehicles";
 import { useEffect, useState } from "react";
 import { RecordModel } from "pocketbase";
 import { InputField } from "@/components/ui/InputField";
+import { SaveIcon, TrashIcon } from "lucide-react";
 
 const newDate = ((now: Date) =>
   `${now.getFullYear()}-${now.getMonth().toString().padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")} 12:00:00`)(
   new Date(),
 );
-
-const Placeholder = () => {
-  return (
-    <div
-      role="status"
-      className="flex flex-1 items-center p-3 h-10 bg-[#1e2024] rounded-base rounded-lg gap-3 animate-pulse"
-    >
-      <span className="sr-only">Loading...</span>
-    </div>
-  );
-};
 
 export default function ActivityForm({
   id,
@@ -68,12 +58,6 @@ export default function ActivityForm({
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-[#111318] rounded-lg">
-      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="text-center text-2xl/9 font-bold tracking-tight text-white">
-          {!id ? "Nova" : "Alteração de"} Atividade
-        </h2>
-      </div>
-
       <div className="mt-10 mx-auto w-full max-w-sm">
         <form action={handleSubmit} className="space-y-6">
           <input type="hidden" id="id" name="id" value={id ?? ""} />
@@ -166,38 +150,32 @@ export default function ActivityForm({
               {error}
             </div>
           )}
-          <div>
-            {canRender ? (
+
+          {/****** Float Buttons *******/}
+          <div className="flex flex-col gap-5 fixed bottom-6 right-6 rounded-2xl shadow-lg z-40">
+            {canRender && (
               <button
                 tabIndex={99}
                 type="submit"
                 name="intent"
                 value="save"
-                className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                className="flex justify-center rounded-2xl shadow-lg p-4 bg-indigo-500"
               >
-                {!id ? "Salvar" : "Alterar"}
+                <SaveIcon />
               </button>
-            ) : (
-              <Placeholder />
+            )}
+            {canRender && id && (
+              <button
+                tabIndex={99}
+                type="submit"
+                name="intent"
+                value="exclude"
+                className="flex justify-center rounded-2xl shadow-lg p-4 bg-red-600"
+              >
+                <TrashIcon />
+              </button>
             )}
           </div>
-          {canRender ? (
-            id && (
-              <div>
-                <button
-                  tabIndex={99}
-                  type="submit"
-                  name="intent"
-                  value="exclude"
-                  className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                >
-                  Excluir
-                </button>
-              </div>
-            )
-          ) : (
-            <Placeholder />
-          )}
         </form>
       </div>
     </div>

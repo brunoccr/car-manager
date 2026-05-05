@@ -2,7 +2,7 @@
 
 import { RecordModel } from "pocketbase";
 import { Vehicle } from "./Vehicle";
-import { Popup } from "@/components/ui/Popup";
+import { Popup } from "@/components/ui/PopupNew";
 
 import VehicleForm from "./VehicleForm";
 import { useState } from "react";
@@ -41,7 +41,10 @@ export function VehiclesList({ items }: { items: RecordModel[] }) {
   return (
     <>
       {editMode && (
-        <Popup onClose={() => setEditMode(false)}>
+        <Popup
+          title={`${!recordId ? "Novo" : "Alteração de"} Veículo`}
+          onBack={() => setEditMode(false)}
+        >
           <VehicleForm
             id={recordId}
             onShare={handleShare}
@@ -50,7 +53,10 @@ export function VehiclesList({ items }: { items: RecordModel[] }) {
         </Popup>
       )}
       {shareMode && (
-        <Popup onClose={() => setShareMode(false)}>
+        <Popup
+          title="Compartilhamento de Veículo"
+          onBack={() => setShareMode(false)}
+        >
           <ShareForm id={recordId} onFinish={() => handleShareFinish()} />
         </Popup>
       )}
