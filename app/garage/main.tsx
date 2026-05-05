@@ -26,7 +26,7 @@ export default function GarageMain({
       <div className="flex flex-col items-center">{children}</div>
       <FloatButton onClick={() => setModeNew(true)} />
       {modeNew && (
-        <Popup title="Novo Veículo" onClose={() => setModeNew(false)}>
+        <Popup title="Novo Veículo" onBack={() => setModeNew(false)}>
           <VehicleForm onFinish={() => handleFinish()} />
         </Popup>
       )}
