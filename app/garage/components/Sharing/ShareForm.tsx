@@ -3,7 +3,8 @@
 import { createShareVehicle } from "@/actions/vehicles";
 import { InputField } from "@/components/ui/InputField";
 import { Share2Icon } from "lucide-react";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { Sharings } from "./Sharings";
 
 export function ShareForm({
   id,
@@ -25,7 +26,7 @@ export function ShareForm({
   };
 
   return (
-    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-[#111318] rounded-lg">
+    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-[#111318] rounded-lg items-center">
       <div className="mt-10 mx-auto w-full max-w-sm">
         <form action={handleSubmit} className="space-y-6">
           <input type="hidden" id="id" name="id" value={id ?? ""} />
@@ -56,6 +57,9 @@ export function ShareForm({
             </button>
           </div>
         </form>
+      </div>
+      <div className="flex flex-col w-full max-w-3xl">
+        <Sharings id={id} />
       </div>
     </div>
   );

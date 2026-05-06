@@ -7,7 +7,7 @@ import { Popup } from "@/components/ui/PopupNew";
 import VehicleForm from "./VehicleForm";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ShareForm } from "./ShareForm";
+import { ShareForm } from "../Sharing/ShareForm";
 
 export function VehiclesList({ items }: { items: RecordModel[] }) {
   const [recordId, setRecordId] = useState("");
@@ -57,7 +57,10 @@ export function VehiclesList({ items }: { items: RecordModel[] }) {
           title="Compartilhamento de Veículo"
           onBack={() => setShareMode(false)}
         >
-          <ShareForm id={recordId} onFinish={() => handleShareFinish()} />
+          <ShareForm
+            id={recordId}
+            onFinish={() => handleShareFinish()}
+          ></ShareForm>
         </Popup>
       )}
       <ul

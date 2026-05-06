@@ -5,7 +5,7 @@ import { ReactNode, useState } from "react";
 import { FloatButton } from "@/components/ui/FloatButton";
 import { Popup } from "@/components/ui/PopupNew";
 import { useRouter } from "next/navigation";
-import VehicleForm from "./components/VehicleForm";
+import VehicleForm from "./components/Vehicle/VehicleForm";
 
 export default function GarageMain({
   children,

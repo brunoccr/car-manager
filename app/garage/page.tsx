@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import GarageMain from "./main";
-import { Vehicles } from "./components/Vehicles";
+import { Vehicles } from "./components/Vehicle/Vehicles";
 
 export default function Garage() {
   return (

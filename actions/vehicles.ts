@@ -3,14 +3,44 @@
 import { createServerClient } from "@/lib/pocketbase";
 import { RecordModel } from "pocketbase";
 
+export async function disableRelation(relationId: string) {
+  const pb = await createServerClient();
+
+  try {
+    await pb.collection("relations").update(relationId, { active: false });
+    return { success: true };
+  } catch (err) {
+    console.error(err);
+    return {
+      success: false,
+      error: "Erro ao tentar inativar compartilhamento!",
+    };
+  }
+}
+
+export async function getRelations(carId: string) {
+  const pb = await createServerClient();
+
+  try {
+    const relations = await pb.collection("relations").getFullList({
+      expand: "user,car",
+      filter: pb.filter("car = {:carId} && type = 'invited' && active = true", {
+        carId,
+      }),
+    });
+
+    return relations;
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
 export async function createShareVehicle(formData: FormData) {
   const pb = await createServerClient();
 
   const id = formData.get("id") as string;
   const email = formData.get("email") as string;
-
-  console.log("id", id);
-  console.log("email", email);
 
   try {
     const users = await pb.collection("users").getList(1, 1, {
@@ -30,18 +60,28 @@ export async function createShareVehicle(formData: FormData) {
       }),
     });
 
+    let relation = relations.items[0];
+
     if (relations.totalItems > 0) {
-      return { success: false, error: "Usuário já tem acesso ao Veículo!" };
+      relation = relations.items[0];
+
+      if (relation.active) {
+        return { success: false, error: "Usuário já tem acesso ao Veículo!" };
+      }
     }
 
-    const body = {
-      active: false,
-      type: "invited",
-      user: userId,
-      car: id,
-    };
+    if (relation) {
+      await pb.collection("relations").update(relation.id, { active: true });
+    } else {
+      const body = {
+        active: false,
+        type: "invited",
+        user: userId,
+        car: id,
+      };
 
-    await pb.collection("relations").create(body);
+      await pb.collection("relations").create(body);
+    }
 
     return { success: true };
   } catch (err) {
@@ -73,6 +113,9 @@ export async function getVehicles(): Promise<RecordModel[]> {
   try {
     const relations = await pb.collection("relations").getFullList({
       expand: "car,user",
+      filter: pb.filter("user = {:userId}", {
+        userId: pb.authStore.record?.id,
+      }),
       sort: "-type",
     });
 
