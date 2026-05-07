@@ -5,7 +5,7 @@ import { logout, getUserInfo } from "../../actions/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AuthRecord } from "pocketbase";
-import { CarIcon, HomeIcon, LayoutListIcon } from "lucide-react";
+import { CarIcon, HomeIcon, KeyRoundIcon, LayoutListIcon } from "lucide-react";
 
 export default function AppDrawer({
   title,
@@ -42,6 +42,11 @@ export default function AppDrawer({
         icon={<LayoutListIcon />}
       />
       <DrawerItem title="Garagem" route="/garage" icon={<CarIcon />} />
+      <DrawerItem
+        title="Alterar Senha"
+        route="/profile/change-password"
+        icon={<KeyRoundIcon />}
+      />
       <DrawerItem title="Sair" variant="button" onClick={handleLogout} />
     </Drawer>
   );

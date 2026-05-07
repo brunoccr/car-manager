@@ -26,8 +26,6 @@ export async function getActivities(filter: string): Promise<RecordModel[]> {
   try {
     const query = convertFilterDateToQuery(filter);
 
-    console.log(query);
-
     const activities = await pb.collection("activities").getFullList({
       filter: `${query}`,
       expand: "car,createdby",

@@ -3,7 +3,7 @@
 import { createShareVehicle } from "@/actions/vehicles";
 import { InputField } from "@/components/ui/InputField";
 import { Share2Icon } from "lucide-react";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import { Sharings } from "./Sharings";
 
 export function ShareForm({

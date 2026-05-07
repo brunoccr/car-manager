@@ -4,6 +4,59 @@ import { createServerClient } from "@/lib/pocketbase";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+export async function changePassword(formData: FormData) {
+  const pb = await createServerClient();
+
+  const oldpass = formData.get("oldpass") as string;
+  const pass1 = formData.get("pass1") as string;
+  const pass2 = formData.get("pass2") as string;
+
+  if (pass1 !== pass2) {
+    return { success: false, error: "As senhas estão diferentes!" };
+  }
+
+  try {
+    await pb.collection("users").update(pb.authStore.record?.id || "", {
+      oldPassword: oldpass,
+      password: pass1,
+      passwordConfirm: pass2,
+    });
+    await pb
+      .collection("users")
+      .authWithPassword(pb.authStore.record?.email, pass1);
+  } catch (err) {
+    console.error(err);
+    return { success: false, error: "Erro ao processar alteração de senha!" };
+  }
+
+  return { success: true };
+}
+
+export async function confirmChangePassword(formData: FormData) {
+  const pb = await createServerClient();
+
+  const token = formData.get("token") as string;
+  const pass1 = formData.get("pass1") as string;
+  const pass2 = formData.get("pass2") as string;
+
+  if (!token) {
+    return { success: false, error: "Token inválido!" };
+  }
+
+  if (pass1 !== pass2) {
+    return { success: false, error: "As senhas estão diferentes!" };
+  }
+
+  try {
+    await pb.collection("users").confirmPasswordReset(token, pass1, pass2);
+  } catch (err) {
+    console.error(err);
+    return { success: false, error: "Erro ao processar alteração de senha!" };
+  }
+
+  return { success: true };
+}
+
 export async function getUserInfo() {
   const pb = await createServerClient();
 
