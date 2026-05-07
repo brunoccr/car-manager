@@ -3,10 +3,10 @@
 import { confirmChangePassword } from "@/actions/auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-function PasswordChangeMain() {
+export default function PasswordChangeMain() {
   const token = useSearchParams().get("token");
 
   const router = useRouter();
@@ -103,13 +103,5 @@ function PasswordChangeMain() {
         </form>
       </div>
     </div>
-  );
-}
-
-export default function PasswordChange() {
-  return (
-    <Suspense>
-      <PasswordChangeMain />
-    </Suspense>
   );
 }
