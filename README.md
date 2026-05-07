@@ -9,7 +9,7 @@ pnpm dev
 ## Build
 
 ```bash
-docker buildx create --name builderx-senac-scrapper
-docker buildx use builderx-senac-scrapper
-docker buildx build --platform linux/amd64,linux/arm64 --provenance=false --sbom=false -t brunoccr/senac-collector:dev --push -f Dockerfile .
+docker buildx create --name builderx
+docker buildx use builderx
+docker buildx build --platform linux/amd64,linux/arm64 --provenance=false --sbom=false -t brunoccr/car-manager:dev --push -f Dockerfile .
 ```
