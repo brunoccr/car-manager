@@ -7,13 +7,13 @@ export async function disableRelation(relationId: string) {
   const pb = await createServerClient();
 
   try {
-    await pb.collection("relations").update(relationId, { active: false });
+    await pb.collection("relations").delete(relationId);
     return { success: true };
   } catch (err) {
     console.error(err);
     return {
       success: false,
-      error: "Erro ao tentar inativar compartilhamento!",
+      error: "Erro ao tentar remover compartilhamento!",
     };
   }
 }
@@ -60,28 +60,18 @@ export async function createShareVehicle(formData: FormData) {
       }),
     });
 
-    let relation = relations.items[0];
-
     if (relations.totalItems > 0) {
-      relation = relations.items[0];
-
-      if (relation.active) {
-        return { success: false, error: "Usuário já tem acesso ao Veículo!" };
-      }
+      return { success: false, error: "Usuário já tem acesso ao Veículo!" };
     }
 
-    if (relation) {
-      await pb.collection("relations").update(relation.id, { active: true });
-    } else {
-      const body = {
-        active: false,
-        type: "invited",
-        user: userId,
-        car: id,
-      };
+    const body = {
+      active: false,
+      type: "invited",
+      user: userId,
+      car: id,
+    };
 
-      await pb.collection("relations").create(body);
-    }
+    await pb.collection("relations").create(body);
 
     return { success: true };
   } catch (err) {
@@ -90,7 +80,7 @@ export async function createShareVehicle(formData: FormData) {
   }
 }
 
-export async function acceptInvice(
+export async function acceptInvite(
   id: string,
 ): Promise<{ success: boolean; error?: string }> {
   const pb = await createServerClient();

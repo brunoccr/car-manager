@@ -1,7 +1,7 @@
 "use client";
 
 import { CarIcon } from "lucide-react";
-import { acceptInvice } from "@/actions/vehicles";
+import { acceptInvite } from "@/actions/vehicles";
 import { useRouter } from "next/navigation";
 
 interface VehicleItemProps {
@@ -32,7 +32,7 @@ export function Vehicle(props: VehicleItemProps) {
   } = props;
 
   const handleAcceptInvite = async (id: string) => {
-    await acceptInvice(id);
+    await acceptInvite(id);
     router.refresh();
   };
 
