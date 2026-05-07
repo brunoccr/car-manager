@@ -9,7 +9,7 @@ WORKDIR /app
 FROM base AS build
 ENV CI=true
 COPY . /app
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --no-verify-store-integrity
 RUN pnpm run build
 
 FROM base
