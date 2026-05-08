@@ -18,6 +18,9 @@ RUN pnpm run build
 
 FROM base
 
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
 RUN npm i pm2 -g
 
 COPY --from=build /app/dist/standalone /app
