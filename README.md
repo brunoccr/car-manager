@@ -15,7 +15,13 @@ docker build -t local/car-manager .
 ## Run Build Dev
 
 ```bash
-docker run --rm -p 3001:3000 -p 8090:8090 -e POCKET_BASE_URL=http://localhost:8090 local/car-manager
+docker run --rm -p 3001:3000 -p 8090:8090 -v ./data:/data local/car-manager
+```
+
+## New Version
+
+```bash
+git tag -a v0.0.0 -m "v0.0.0" & git push origin --tags
 ```
 
 ## Build

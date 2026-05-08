@@ -3,7 +3,7 @@ module.exports = {
     {
       name: "backend",
       script: "/pb/pocketbase",
-      args: "serve --http=0.0.0.0:8090 --automigrate",
+      args: "serve --http=0.0.0.0:8090 --automigrate --dir /data --migrationsDir /pb/pb_migrations",
     },
     {
       name: "frontend",
