@@ -30,7 +30,7 @@ COPY --from=build /app/ecosystem.config.js /app/ecosystem.config.js
 
 EXPOSE 3000
 
-ARG PB_VERSION=0.23.0
+ARG PB_VERSION=0.38.0
 
 RUN apt-get update && apt-get install -y unzip
 
