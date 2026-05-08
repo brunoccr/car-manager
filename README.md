@@ -6,6 +6,18 @@ First, run the development server:
 pnpm dev
 ```
 
+## Build Dev
+
+```bash
+docker build -t local/car-manager .
+```
+
+## Run Build Dev
+
+```bash
+docker run --rm -p 3001:3000 -p 8090:8090 -e POCKET_BASE_URL=http://localhost:8090 local/car-manager
+```
+
 ## Build
 
 ```bash
