@@ -149,7 +149,9 @@ export async function createOrUpdateVehicle(formData: FormData): Promise<{
         await pb.collection("cars").update(id, { active: false });
       }
     } else {
-      const newCar = await pb.collection("cars").create(body);
+      const newCar = await pb
+        .collection("cars")
+        .create({ ...body, active: true });
       await pb.collection("relations").create({
         car: newCar.id,
         user: pb.authStore.record?.id,
