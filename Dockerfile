@@ -50,4 +50,4 @@ VOLUME /pb/pb_data
 
 RUN /pb/pocketbase superuser upsert ${PB_ADMIN_USER} ${PB_ADMIN_PASS}
 
-CMD [ "pm2", "start", "ecosystem.config.js" ]
+CMD [ "pm2-runtime", "start", "ecosystem.config.js" ]
