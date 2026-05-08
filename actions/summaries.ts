@@ -33,6 +33,7 @@ export async function getSummaries(
 
     const activities = await pb.collection("activities").getFullList({
       filter: `${query}`,
+      expand: "car",
       sort: "-startdate",
     });
 
@@ -66,6 +67,7 @@ export async function getSummaries(
         const beforeActivity = activities.find(
           (f) =>
             f.id !== a.id &&
+            f.expand?.car.id === a.expand?.car.id &&
             new Date(f.startdate) < new Date(a.startdate) &&
             f.type === fuelFillType,
         );

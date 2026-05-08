@@ -190,9 +190,12 @@ export async function getUserVehicles(): Promise<
   const pb = await createServerClient();
 
   try {
-    const relations = await pb
-      .collection("relations")
-      .getFullList({ expand: "car" });
+    const relations = await pb.collection("relations").getFullList({
+      expand: "car",
+      filter: pb.filter("user = {:userId} && active = true", {
+        userId: pb.authStore.record?.id,
+      }),
+    });
 
     const activities = await pb.collection("activities").getList(1, 1, {
       filter: `createdby = "${pb.authStore.record?.id}"`,

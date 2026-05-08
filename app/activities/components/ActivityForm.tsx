@@ -8,7 +8,7 @@ import { InputField } from "@/components/ui/InputField";
 import { SaveIcon, TrashIcon } from "lucide-react";
 
 const newDate = ((now: Date) =>
-  `${now.getFullYear()}-${now.getMonth().toString().padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")} 12:00:00`)(
+  `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")} 12:00:00`)(
   new Date(),
 );
 

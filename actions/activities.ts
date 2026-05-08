@@ -39,6 +39,7 @@ export async function getActivities(filter: string): Promise<RecordModel[]> {
         const beforeActivity = activities.find(
           (f) =>
             f.id !== a.id &&
+            f.expand?.car.id === a.expand?.car.id &&
             new Date(f.startdate) < new Date(a.startdate) &&
             f.type === fuelFillType,
         );

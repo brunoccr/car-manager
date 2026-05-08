@@ -9,7 +9,7 @@ export function convertFilterDateToQuery(filter: string) {
     startDate = new Date(
       Date.UTC(
         startDate.getUTCFullYear(),
-        startDate.getUTCMonth() - 1,
+        startDate.getUTCMonth(),
         1,
         0,
         0,
@@ -20,7 +20,7 @@ export function convertFilterDateToQuery(filter: string) {
     lastDate = new Date(
       Date.UTC(
         lastDate.getUTCFullYear(),
-        lastDate.getUTCMonth(),
+        lastDate.getUTCMonth() + 1,
         0,
         23,
         59,
