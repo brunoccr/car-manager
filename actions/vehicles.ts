@@ -101,7 +101,6 @@ export async function getVehicles(): Promise<RecordModel[]> {
   const pb = await createServerClient();
 
   try {
-    console.log("id", pb.authStore.record?.id);
     const relations = await pb.collection("relations").getFullList({
       expand: "car,user",
       filter: pb.filter("user = {:userId}", {
