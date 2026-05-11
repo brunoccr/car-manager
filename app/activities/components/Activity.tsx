@@ -68,7 +68,7 @@ export function Activity(props: ActivityItemProps) {
                   <div>{formatNumber(KMPerLitres, 1)} Km/L</div>
                 </div>
                 <div className="flex flex-row justify-between w-full">
-                  <div>{liters} L</div>
+                  <div>{formatNumber(liters, 1)} L</div>
                   <div>R$ {formatNumber(valuePerLiters, 2)} / L</div>
                 </div>
               </>

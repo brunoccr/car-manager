@@ -8,20 +8,27 @@ export async function createServerClient() {
   const authCookie = cookieStore.get("pb_auth");
 
   if (authCookie) {
-    pb.authStore.loadFromCookie(authCookie.value, authCookie.name);
+    pb.authStore.loadFromCookie(`pb_auth=${authCookie.value}`);
   }
 
   pb.authStore.onChange(() => {
     if (pb.authStore.isValid) {
-      cookieStore.set(
-        "pb_auth",
-        pb.authStore.exportToCookie({ 
-           httpOnly: false, 
-           secure: true, 
-           sameSite: "Lax", 
-           path: "/" 
-        }),
-      );
+      const maxAge = 60 * 60 * 24 * 7;
+
+      const cookieString = pb.authStore.exportToCookie({
+        maxAge,
+        path: "/",
+      });
+
+      const rawValue = cookieString.split(";")[0].split("=")[1];
+
+      cookieStore.set("pb_auth", rawValue, {
+        httpOnly: false,
+        secure: true,
+        sameSite: "lax",
+        maxAge,
+        path: "/",
+      });
     }
   });
 
