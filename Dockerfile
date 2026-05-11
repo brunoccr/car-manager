@@ -3,6 +3,7 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 ARG APP_VERSION
+ARG TARGETARCH
 ENV NEXT_PUBLIC_APP_VERSION=$APP_VERSION
 WORKDIR /app
 
@@ -34,7 +35,7 @@ ARG PB_VERSION=0.38.0
 
 RUN apt-get update && apt-get install -y unzip
 
-ADD https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip /tmp/pb.zip
+ADD https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_${TARGETARCH}.zip /tmp/pb.zip
 RUN unzip /tmp/pb.zip -d /pb/
 
 COPY --from=build /app/migrations /pb/pb_migrations
