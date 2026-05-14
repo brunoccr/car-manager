@@ -44,11 +44,6 @@ EXPOSE 8090
 
 ENV POCKET_BASE_URL=http://127.0.0.1:8090
 
-#ARG PB_ADMIN_USER=default@default.local
-#ARG PB_ADMIN_PASS=changeit
-
 VOLUME /data
-
-#RUN /pb/pocketbase superuser upsert ${PB_ADMIN_USER} ${PB_ADMIN_PASS}
 
 CMD [ "pm2-runtime", "start", "ecosystem.config.js" ]
