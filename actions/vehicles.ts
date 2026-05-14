@@ -131,6 +131,7 @@ export async function createOrUpdateVehicle(formData: FormData): Promise<{
   const model = formData.get("model") as string;
   const year = formData.get("year") as string;
   const plate = formData.get("plate") as string;
+  const maintenance = formData.get("maintenance") as string;
 
   try {
     const body = {
@@ -140,6 +141,7 @@ export async function createOrUpdateVehicle(formData: FormData): Promise<{
       model,
       year,
       plate,
+      maintenance,
     };
 
     if (id) {

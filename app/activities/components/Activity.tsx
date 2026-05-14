@@ -13,6 +13,7 @@ interface ActivityItemProps {
   KMPerLitres?: number;
   liters?: number;
   valuePerLiters?: number;
+  fill: boolean;
   onClick?: (id: string) => void;
   isLast: boolean;
 }
@@ -28,6 +29,7 @@ export function Activity(props: ActivityItemProps) {
     KMPerLitres,
     liters,
     valuePerLiters,
+    fill,
     onClick = () => {},
     isLast,
   } = props;
@@ -52,7 +54,14 @@ export function Activity(props: ActivityItemProps) {
       </div>
       <div className="mb-10 w-full">
         <div className="flex items-center mb-2 h-6 justify-between font-bold">
-          <div>{activityType}</div>
+          <div>
+            {activityType}
+            {activityType == "Reabastecimento"
+              ? fill
+                ? " (Total)"
+                : " (Parcial)"
+              : ""}
+          </div>
           <div className="bg-indigo-500 pr-2 pl-2 rounded-sm">{carName}</div>
         </div>
         <div>

@@ -66,9 +66,8 @@ export const InputField = ({
                 id={name}
                 name={name}
                 value={state ?? ""}
-                //defaultValue={treatedValue}
                 onChange={handleSelectChange}
-                className={`${className} block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6`}
+                className={`${className} block w-full rounded-md bg-white/5 px-3 py-2 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6`}
               >
                 {options &&
                   options.map((c) => (
@@ -89,8 +88,7 @@ export const InputField = ({
                 min={min}
                 step={step}
                 value={state ?? ""}
-                //defaultValue={treatedValue}
-                className={`${className} block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6`}
+                className={`${className} block ${variant != "checkbox" ? "w-full" : "mt-4 size-5"} rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6`}
               />
             )}
           </>

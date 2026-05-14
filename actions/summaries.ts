@@ -1,5 +1,8 @@
 import { createServerClient } from "@/lib/pocketbase";
-import { convertFilterDateToQuery } from "@actions/utils";
+import {
+  convertFilterDateToQuery,
+  updateConsumeActivities,
+} from "@actions/utils";
 
 interface GetSummariesResult {
   success: boolean;
@@ -31,7 +34,7 @@ export async function getSummaries(
   try {
     const query = convertFilterDateToQuery(filter);
 
-    const activities = await pb.collection("activities").getFullList({
+    let activities = await pb.collection("activities").getFullList({
       filter: `${query}`,
       expand: "car",
       sort: "-startdate",
@@ -57,6 +60,8 @@ export async function getSummaries(
 
     const consumes: number[] = [];
 
+    activities = updateConsumeActivities(activities);
+
     activities.forEach((a) => {
       summary.totalPaid += a.totalPaid;
 
@@ -64,16 +69,8 @@ export async function getSummaries(
         summary.expenses.fuel.quantity += 1;
         summary.expenses.fuel.value += a.totalPaid;
 
-        const beforeActivity = activities.find(
-          (f) =>
-            f.id !== a.id &&
-            f.expand?.car.id === a.expand?.car.id &&
-            new Date(f.startdate) < new Date(a.startdate) &&
-            f.type === fuelFillType,
-        );
-
-        if (beforeActivity) {
-          consumes.push((a.totalkm - beforeActivity.totalkm) / a.totalVolume);
+        if (a.KMPerLitres > 0) {
+          consumes.push(a.KMPerLitres);
         }
       } else if (a.type === maintenanceType) {
         summary.expenses.maintenances.quantity += 1;

@@ -107,6 +107,20 @@ export default function VehicleForm({
                 placeholder="AAA-0A00"
               />
             </div>
+            <div className="flex flex-row gap-5">
+              <InputField
+                loading={!canRender}
+                label="Intervalo de KMs para Revisão"
+                name="maintenance"
+                variant="number"
+                tabIndex={6}
+                placeholder="000000"
+                value={record?.expand?.car?.maintenance}
+                required
+                min="1"
+                step="1"
+              />
+            </div>
             {error && (
               <div className="mt-5 flex items-center flex-col text-red-700">
                 {error}

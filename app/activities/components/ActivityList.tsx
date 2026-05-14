@@ -50,6 +50,7 @@ export function ActivityList({ items }: { items: RecordModel[] }) {
               totalKM={a.totalkm}
               KMPerLitres={a.KMPerLitres}
               liters={a.totalVolume}
+              fill={a.fill}
               valuePerLiters={
                 (a.totalPaid as number) / (a.totalVolume as number)
               }

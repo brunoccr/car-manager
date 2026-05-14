@@ -2,7 +2,10 @@
 
 import { createServerClient } from "@/lib/pocketbase";
 import { RecordModel } from "pocketbase";
-import { convertFilterDateToQuery } from "@actions/utils";
+import {
+  convertFilterDateToQuery,
+  updateConsumeActivities,
+} from "@actions/utils";
 
 export async function getActivity(id: string): Promise<RecordModel | null> {
   const pb = await createServerClient();
@@ -32,28 +35,7 @@ export async function getActivities(filter: string): Promise<RecordModel[]> {
       sort: "-startdate",
     });
 
-    const fuelFillType = "Reabastecimento";
-
-    activities.forEach((a) => {
-      if (a.type === fuelFillType) {
-        const beforeActivity = activities.find(
-          (f) =>
-            f.id !== a.id &&
-            f.expand?.car.id === a.expand?.car.id &&
-            new Date(f.startdate) < new Date(a.startdate) &&
-            f.type === fuelFillType,
-        );
-
-        if (beforeActivity) {
-          a["KMPerLitres"] =
-            (a.totalkm - beforeActivity.totalkm) / a.totalVolume;
-        } else {
-          a["KMPerLitres"] = 0;
-        }
-      }
-    });
-
-    return activities;
+    return updateConsumeActivities(activities);
   } catch (err) {
     console.error(err);
     return [];
@@ -82,6 +64,7 @@ export async function createOrUpdateActivity(formData: FormData): Promise<{
   const totalKM = formData.get("totalKM") as string;
   const totalValue = formData.get("totalValue") as string;
   const volume = formData.get("volume") as string;
+  const fill = formData.get("fill") as string;
 
   try {
     const body = {
@@ -92,6 +75,7 @@ export async function createOrUpdateActivity(formData: FormData): Promise<{
       totalkm: totalKM,
       totalPaid: totalValue,
       totalVolume: volume,
+      fill: fill,
     };
 
     if (id) {

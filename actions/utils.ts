@@ -1,3 +1,5 @@
+import { RecordModel } from "pocketbase";
+
 export function convertFilterDateToQuery(filter: string) {
   const formatDate = (date: Date) =>
     date.toISOString().replace("T", " ").split(".")[0];
@@ -69,4 +71,46 @@ export function convertFilterDateToQuery(filter: string) {
   } else if (filter === "all") {
     return `startdate >= "${formatDate(new Date(Date.UTC(1900, 0, 1, 0, 0, 0)))}"`;
   }
+}
+
+export function updateConsumeActivities(
+  activities: RecordModel[],
+): RecordModel[] {
+  const fuelFillType = "Reabastecimento";
+
+  activities.forEach((a, aIndex) => {
+    if (a.type !== fuelFillType) {
+      return;
+    }
+
+    if (a.fill) {
+      const bIndex = activities.findIndex(
+        (e) =>
+          e.id !== a.id &&
+          e.expand?.car.id === a.expand?.car.id &&
+          e.totalkm < a.totalkm &&
+          e.type === fuelFillType &&
+          e.fill,
+      );
+
+      if (bIndex == -1) {
+        a["KMPerLitres"] = 0;
+        return;
+      }
+
+      const relevantEntries = activities.slice(aIndex, bIndex);
+      const totalLiters = relevantEntries.reduce(
+        (acc, curr) => acc + curr.totalVolume,
+        0,
+      );
+
+      const totalDistance = a.totalkm - activities[bIndex].totalkm;
+
+      a["KMPerLitres"] = totalDistance / totalLiters;
+    } else {
+      a["KMPerLitres"] = 0;
+    }
+  });
+
+  return activities;
 }

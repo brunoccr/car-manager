@@ -146,7 +146,7 @@ export default function ActivityForm({
               step="0.01"
             />
           </div>
-          <div>
+          <div className="flex flex-row gap-5">
             {!hideFuelFields && (
               <InputField
                 loading={!canRender}
@@ -159,6 +159,21 @@ export default function ActivityForm({
                 placeholder="0,00"
                 min="1"
                 step="0.01"
+              />
+            )}
+            {!hideFuelFields && (
+              <InputField
+                loading={!canRender}
+                label="Encheu o Tanque?"
+                name="fill"
+                variant="combo"
+                value={record?.fill}
+                tabIndex={7}
+                required
+                options={[
+                  { label: "Sim", value: "true" },
+                  { label: "Não", value: "false" },
+                ]}
               />
             )}
           </div>
