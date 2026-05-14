@@ -59,7 +59,7 @@ export function VehiclesList({ items }: { items: RecordModel[] }) {
         >
           <ShareForm
             id={recordId}
-            onFinish={() => handleShareFinish()}
+            onFinishAction={() => handleShareFinish()}
           ></ShareForm>
         </Popup>
       )}
