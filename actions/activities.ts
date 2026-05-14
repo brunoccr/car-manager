@@ -70,6 +70,12 @@ export async function createOrUpdateActivity(formData: FormData): Promise<{
   const isExclude = intent === "exclude";
 
   const id = formData.get("id") as string | undefined;
+  const lat = formData.get("lat")
+    ? parseFloat(formData.get("lat") as string)
+    : null;
+  const lon = formData.get("lng")
+    ? parseFloat(formData.get("lng") as string)
+    : null;
   const carId = formData.get("vehicle") as string;
   const type = formData.get("type") as string;
   const startDate = formData.get("date") as string;
@@ -95,7 +101,9 @@ export async function createOrUpdateActivity(formData: FormData): Promise<{
         await pb.collection("activities").delete(id);
       }
     } else {
-      await pb.collection("activities").create(body);
+      await pb
+        .collection("activities")
+        .create({ ...body, location: { lat, lon } });
     }
 
     return { success: true };

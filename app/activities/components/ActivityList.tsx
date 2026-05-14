@@ -31,7 +31,7 @@ export function ActivityList({ items }: { items: RecordModel[] }) {
           title={`${!recordId ? "Nova" : "Alteração de"} Atividade`}
           onBack={() => setEditMode(false)}
         >
-          <ActivityForm id={recordId} onFinish={() => handleFinish()} />
+          <ActivityForm id={recordId} onFinishAction={() => handleFinish()} />
         </Popup>
       )}
       <ul

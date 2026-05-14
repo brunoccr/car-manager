@@ -14,12 +14,16 @@ const newDate = ((now: Date) =>
 
 export default function ActivityForm({
   id,
-  onFinish,
+  onFinishAction,
 }: {
   id?: string;
-  onFinish: () => void;
+  onFinishAction: () => void;
 }) {
   const [error, setError] = useState("");
+  const [location, setLocation] = useState<{ lat?: number; lng?: number }>({
+    lat: undefined,
+    lng: undefined,
+  });
   const [hideFuelFields, setHideFuelFields] = useState(false);
   const [vehicles, setVehicles] = useState<{ label: string; value: string }[]>(
     [],
@@ -39,6 +43,15 @@ export default function ActivityForm({
         const activity = await getActivity(id);
         setRecord(activity);
         handleChangeType(activity?.type);
+      } else {
+        if ("geolocation" in navigator) {
+          navigator.geolocation.getCurrentPosition((pos) => {
+            setLocation({
+              lat: pos.coords.latitude,
+              lng: pos.coords.longitude,
+            });
+          });
+        }
       }
     })();
   }, [id]);
@@ -47,7 +60,7 @@ export default function ActivityForm({
     const result = await createOrUpdateActivity(formData);
 
     if (result.success) {
-      onFinish();
+      onFinishAction();
     } else {
       setError(result.error as string);
     }
@@ -61,6 +74,8 @@ export default function ActivityForm({
       <div className="mt-10 mx-auto w-full max-w-sm">
         <form action={handleSubmit} className="space-y-6">
           <input type="hidden" id="id" name="id" value={id ?? ""} />
+          <input type="hidden" id="lat" name="lat" value={location.lat ?? ""} />
+          <input type="hidden" id="lng" name="lng" value={location.lng ?? ""} />
           <div>
             <InputField
               loading={!canRender}

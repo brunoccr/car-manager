@@ -30,7 +30,7 @@ export default function ActivitiesMain({
         <FloatButton onClick={() => setModeNew(true)} />
         {modeNew && (
           <Popup title="Nova Atividade" onBack={() => setModeNew(false)}>
-            <ActivityForm onFinish={() => handleFinish()} />
+            <ActivityForm onFinishAction={() => handleFinish()} />
           </Popup>
         )}
       </div>

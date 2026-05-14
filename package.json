@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "docker run -d --rm --name carmanager -p 3001:3000 -p 8090:8090 -v ./data:/data local/car-manager && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
