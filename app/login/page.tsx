@@ -1,6 +1,7 @@
 "use client";
 
 import { login } from "@/actions/auth";
+import { Loading } from "@/components/ui/Loading";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,10 +9,8 @@ import { useState } from "react";
 export default function Login() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  //const [loading, setLoading] = useState(false);
 
   async function handleSubmit(formData: FormData) {
-    //setLoading(true);
     setError(null);
     const result = await login(formData);
 
@@ -20,8 +19,6 @@ export default function Login() {
       setTimeout(() => {
         setError(null);
       }, 5000);
-
-      //setLoading(false);
     } else {
       router.refresh();
     }
@@ -57,6 +54,7 @@ export default function Login() {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form action={handleSubmit} className="space-y-6">
+            <Loading label="Processando" />
             <div>
               <label
                 htmlFor="email"

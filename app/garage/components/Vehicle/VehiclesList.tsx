@@ -47,8 +47,8 @@ export function VehiclesList({ items }: { items: RecordModel[] }) {
         >
           <VehicleForm
             id={recordId}
-            onShare={handleShare}
-            onFinish={() => handleEditFinish()}
+            onShareAction={handleShare}
+            onFinishAction={() => handleEditFinish()}
           />
         </Popup>
       )}

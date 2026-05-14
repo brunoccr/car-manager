@@ -1,6 +1,7 @@
 "use client";
 
 import { recoverPassword } from "@/actions/auth";
+import { Loading } from "@/components/ui/Loading";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,10 +9,8 @@ import { useState } from "react";
 export default function Remember() {
   const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
-  //const [loading, setLoading] = useState(false);
 
   async function handleSubmit(formData: FormData) {
-    //setLoading(true);
     setMessage(null);
     const result = await recoverPassword(formData);
 
@@ -20,8 +19,6 @@ export default function Remember() {
       setTimeout(() => {
         setMessage(null);
       }, 5000);
-
-      //setLoading(false);
     } else {
       setMessage("Link de recuperação enviado para o e-mail!");
       setTimeout(() => {
@@ -48,6 +45,7 @@ export default function Remember() {
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form action={handleSubmit} className="space-y-6">
+          <Loading label="Processando" />
           <div>
             <label
               htmlFor="email"

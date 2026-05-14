@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { RecordModel } from "pocketbase";
 import { InputField } from "@/components/ui/InputField";
 import { SaveIcon, TrashIcon } from "lucide-react";
+import { Loading } from "@/components/ui/Loading";
 
 const newDate = ((now: Date) =>
   `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")} 12:00:00`)(
@@ -73,6 +74,7 @@ export default function ActivityForm({
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-[#111318] rounded-lg">
       <div className="mt-10 mx-auto w-full max-w-sm">
         <form action={handleSubmit} className="space-y-6">
+          <Loading label="Processando" />
           <input type="hidden" id="id" name="id" value={id ?? ""} />
           <input type="hidden" id="lat" name="lat" value={location.lat ?? ""} />
           <input type="hidden" id="lng" name="lng" value={location.lng ?? ""} />

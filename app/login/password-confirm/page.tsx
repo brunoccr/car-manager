@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { Loading } from "@/components/ui/Loading";
 
 function PasswordChangeMain() {
   const token = useSearchParams().get("token");
@@ -47,6 +48,7 @@ function PasswordChangeMain() {
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form action={handleSubmit} className="space-y-6">
+          <Loading label="Processando" />
           <input type="hidden" id="token" name="token" value={token ?? ""} />
           <div>
             <label

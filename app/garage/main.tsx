@@ -27,7 +27,7 @@ export default function GarageMain({
       <FloatButton onClick={() => setModeNew(true)} />
       {modeNew && (
         <Popup title="Novo Veículo" onBack={() => setModeNew(false)}>
-          <VehicleForm onFinish={() => handleFinish()} />
+          <VehicleForm onFinishAction={() => handleFinish()} />
         </Popup>
       )}
     </div>
