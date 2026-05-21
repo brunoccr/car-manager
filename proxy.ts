@@ -38,5 +38,6 @@ export const config = {
     "/dashboard/:path*",
     "/activities/:path*",
     "/garage/:path*",
+    "/api/:path*",
   ],
 };
