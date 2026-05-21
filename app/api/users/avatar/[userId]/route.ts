@@ -6,8 +6,15 @@ export async function GET(
   { params }: { params: Promise<{ userId: string }> },
 ) {
   const userId = (await params).userId;
+
   const pb = await createServerClient();
-  const user = await pb.collection("users").getOne(userId);
+  let user;
+
+  try {
+    user = await pb.collection("users").getOne(userId);
+  } catch {
+    return new NextResponse(null, { status: 404 });
+  }
 
   if (user.avatar) {
     const url = pb.files.getURL(user, user.avatar);
