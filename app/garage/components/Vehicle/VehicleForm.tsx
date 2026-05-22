@@ -5,7 +5,8 @@ import { RecordModel } from "pocketbase";
 import { InputField } from "@/components/ui/InputField";
 import { useEffect, useState } from "react";
 import { SaveIcon, Share2Icon, TrashIcon } from "lucide-react";
-import { Loading } from "@/components/ui/Loading";
+import { useLoading } from "@/components/hooks/useLoading";
+import { useConfirmation } from "@/components/hooks/useConfirmation";
 
 export default function VehicleForm({
   id,
@@ -18,6 +19,8 @@ export default function VehicleForm({
 }) {
   const [error, setError] = useState("");
   const [record, setRecord] = useState<RecordModel | null>(null);
+  const [confirm, showConfirmation] = useConfirmation();
+  const [loading, showLoading] = useLoading();
 
   useEffect(() => {
     (async () => {
@@ -28,13 +31,34 @@ export default function VehicleForm({
     })();
   }, [id]);
 
-  const handleSubmit = async (formData: FormData) => {
-    const result = await createOrUpdateVehicle(formData);
+  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    if (result.success) {
-      onFinishAction();
-    } else {
-      setError(result.error as string);
+    const formData = new FormData(event.currentTarget);
+
+    let resultConfirm;
+
+    const submitter = event.nativeEvent.submitter as HTMLButtonElement | null;
+
+    const intent = submitter?.value;
+    const isExclude = intent === "exclude";
+
+    if (isExclude) {
+      resultConfirm = await showConfirmation("Confirma a exclusão do Veículo?");
+    }
+
+    if (!isExclude || (isExclude && resultConfirm)) {
+      formData.append("intent", intent);
+
+      showLoading("Processando", async () => {
+        const result = await createOrUpdateVehicle(formData);
+
+        if (result.success) {
+          onFinishAction();
+        } else {
+          setError(result.error as string);
+        }
+      });
     }
   };
 
@@ -42,132 +66,131 @@ export default function VehicleForm({
   const isOwner = record != undefined && record.type === "owner";
 
   return (
-    <>
-      <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-[#111318] rounded-lg">
-        <div className="mt-10 mx-auto w-full max-w-sm">
-          <form action={handleSubmit} className="space-y-6">
-            <Loading label="Processando" />
-            <input
-              type="hidden"
-              id="id"
-              name="id"
-              value={record?.expand?.car.id ?? ""}
+    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-[#111318] rounded-lg">
+      {confirm}
+      <div className="mt-10 mx-auto w-full max-w-sm">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {loading}
+          <input
+            type="hidden"
+            id="id"
+            name="id"
+            value={record?.expand?.car.id ?? ""}
+          />
+          <div>
+            <InputField
+              loading={!canRender}
+              label="Apelido"
+              name="alias"
+              tabIndex={1}
+              required
+              value={record?.expand?.car?.alias}
+              placeholder="Toyota Rav4"
             />
-            <div>
-              <InputField
-                loading={!canRender}
-                label="Apelido"
-                name="alias"
-                tabIndex={1}
-                required
-                value={record?.expand?.car?.alias}
-                placeholder="Toyota Rav4"
-              />
+          </div>
+          <div className="flex flex-row gap-5">
+            <InputField
+              loading={!canRender}
+              label="Marca"
+              name="brand"
+              tabIndex={2}
+              required
+              value={record?.expand?.car?.brand}
+              placeholder="Toyota"
+            />
+            <InputField
+              loading={!canRender}
+              label="Modelo"
+              name="model"
+              tabIndex={3}
+              required
+              value={record?.expand?.car?.model}
+              placeholder="Rav4"
+            />
+          </div>
+          <div className="flex flex-row gap-5">
+            <InputField
+              loading={!canRender}
+              label="Ano"
+              name="year"
+              variant="number"
+              tabIndex={4}
+              placeholder="0000"
+              value={record?.expand?.car?.year}
+              required
+              min="1"
+              step="1"
+            />
+            <InputField
+              loading={!canRender}
+              label="Placa"
+              name="plate"
+              tabIndex={5}
+              required
+              value={record?.expand?.car?.plate}
+              placeholder="AAA-0A00"
+            />
+          </div>
+          <div className="flex flex-row gap-5">
+            <InputField
+              loading={!canRender}
+              label="Intervalo de KMs para Revisão"
+              name="maintenance"
+              variant="number"
+              tabIndex={6}
+              placeholder="000000"
+              value={record?.expand?.car?.maintenance}
+              required
+              min="1"
+              step="1"
+            />
+          </div>
+          {error && (
+            <div className="mt-5 flex items-center flex-col text-red-700">
+              {error}
             </div>
-            <div className="flex flex-row gap-5">
-              <InputField
-                loading={!canRender}
-                label="Marca"
-                name="brand"
-                tabIndex={2}
-                required
-                value={record?.expand?.car?.brand}
-                placeholder="Toyota"
-              />
-              <InputField
-                loading={!canRender}
-                label="Modelo"
-                name="model"
-                tabIndex={3}
-                required
-                value={record?.expand?.car?.model}
-                placeholder="Rav4"
-              />
-            </div>
-            <div className="flex flex-row gap-5">
-              <InputField
-                loading={!canRender}
-                label="Ano"
-                name="year"
-                variant="number"
-                tabIndex={4}
-                placeholder="0000"
-                value={record?.expand?.car?.year}
-                required
-                min="1"
-                step="1"
-              />
-              <InputField
-                loading={!canRender}
-                label="Placa"
-                name="plate"
-                tabIndex={5}
-                required
-                value={record?.expand?.car?.plate}
-                placeholder="AAA-0A00"
-              />
-            </div>
-            <div className="flex flex-row gap-5">
-              <InputField
-                loading={!canRender}
-                label="Intervalo de KMs para Revisão"
-                name="maintenance"
-                variant="number"
-                tabIndex={6}
-                placeholder="000000"
-                value={record?.expand?.car?.maintenance}
-                required
-                min="1"
-                step="1"
-              />
-            </div>
-            {error && (
-              <div className="mt-5 flex items-center flex-col text-red-700">
-                {error}
-              </div>
+          )}
+
+          {/****** Float Buttons *******/}
+          <div className="flex flex-col gap-5 fixed bottom-6 right-6 rounded-2xl shadow-lg z-40">
+            {canRender && (
+              <button
+                tabIndex={99}
+                type="submit"
+                name="intent"
+                value="save"
+                className="flex justify-center rounded-2xl shadow-lg p-4 bg-indigo-500"
+              >
+                <SaveIcon />
+              </button>
             )}
 
-            {/****** Float Buttons *******/}
-            <div className="flex flex-col gap-5 fixed bottom-6 right-6 rounded-2xl shadow-lg z-40">
-              {canRender && (
-                <button
-                  tabIndex={99}
-                  type="submit"
-                  name="intent"
-                  value="save"
-                  className="flex justify-center rounded-2xl shadow-lg p-4 bg-indigo-500"
-                >
-                  <SaveIcon />
-                </button>
-              )}
+            {isOwner && canRender && (
+              <button
+                tabIndex={99}
+                onClick={() =>
+                  onShareAction && onShareAction(record?.expand?.car.id || "")
+                }
+                className="flex justify-center rounded-2xl shadow-lg p-4 bg-green-500"
+              >
+                <Share2Icon />
+              </button>
+            )}
 
-              {isOwner && canRender && (
-                <button
-                  tabIndex={99}
-                  onClick={() =>
-                    onShareAction && onShareAction(record?.expand?.car.id || "")
-                  }
-                  className="flex justify-center rounded-2xl shadow-lg p-4 bg-green-500"
-                >
-                  <Share2Icon />
-                </button>
-              )}
-
-              {canRender && id && (
-                <button
-                  tabIndex={99}
-                  type="submit"
-                  name="intent"
-                  value="exclude"
-                  className="flex justify-center rounded-2xl shadow-lg p-4 bg-red-600"
-                >
-                  <TrashIcon />
-                </button>
-              )}
-            </div>
-          </form>
-        </div>
+            {canRender && id && (
+              <button
+                tabIndex={99}
+                type="submit"
+                name="intent"
+                value="exclude"
+                className="flex justify-center rounded-2xl shadow-lg p-4 bg-red-600"
+              >
+                <TrashIcon />
+              </button>
+            )}
+          </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 }

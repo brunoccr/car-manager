@@ -5,33 +5,40 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { Loading } from "@/components/ui/Loading";
+import { useLoading } from "@/components/hooks/useLoading";
 
 function PasswordChangeMain() {
   const token = useSearchParams().get("token");
 
   const router = useRouter();
+  const [loading, showLoading] = useLoading();
   const [message, setMessage] = useState<string | null>(null);
 
-  async function handleSubmit(formData: FormData) {
-    setMessage(null);
-    const result = await confirmChangePassword(formData);
+  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    if (result.success) {
-      setMessage("Senha alterada! Redirecionando para o login...");
-      setTimeout(() => {
-        router.push("/login");
-      }, 5000);
-    } else {
-      setMessage(result?.error ?? "");
-      setTimeout(() => {
-        setMessage(null);
-      }, 5000);
-    }
-  }
+    const formData = new FormData(event.currentTarget);
+
+    showLoading("Processando", async () => {
+      const result = await confirmChangePassword(formData);
+
+      if (result.success) {
+        setMessage("Senha alterada! Redirecionando para o login...");
+        setTimeout(() => {
+          router.push("/login");
+        }, 5000);
+      } else {
+        setMessage(result?.error ?? "");
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
+      }
+    });
+  };
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+      {loading}
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <Image
           src="/icon-192x192.png"
@@ -47,8 +54,7 @@ function PasswordChangeMain() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action={handleSubmit} className="space-y-6">
-          <Loading label="Processando" />
+        <form onSubmit={handleSubmit} className="space-y-6">
           <input type="hidden" id="token" name="token" value={token ?? ""} />
           <div>
             <label

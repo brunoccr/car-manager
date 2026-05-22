@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 import { RecordModel } from "pocketbase";
 import { InputField } from "@/components/ui/InputField";
 import { SaveIcon, TrashIcon } from "lucide-react";
-import { Loading } from "@/components/ui/Loading";
+import { useLoading } from "@/components/hooks/useLoading";
+import { useConfirmation } from "@/components/hooks/useConfirmation";
 
 const newDate = ((now: Date) =>
   `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")} 12:00:00`)(
@@ -21,6 +22,8 @@ export default function ActivityForm({
   onFinishAction: () => void;
 }) {
   const [error, setError] = useState("");
+  const [loading, showLoading] = useLoading();
+  const [confirm, showConfirmation] = useConfirmation();
   const [location, setLocation] = useState<{ lat?: number; lng?: number }>({
     lat: undefined,
     lng: undefined,
@@ -57,13 +60,36 @@ export default function ActivityForm({
     })();
   }, [id]);
 
-  const handleSubmit = async (formData: FormData) => {
-    const result = await createOrUpdateActivity(formData);
+  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    if (result.success) {
-      onFinishAction();
-    } else {
-      setError(result.error as string);
+    const formData = new FormData(event.currentTarget);
+
+    const submitter = event.nativeEvent.submitter as HTMLButtonElement | null;
+
+    const intent = submitter?.value;
+    const isExclude = intent === "exclude";
+
+    let resultConfirm;
+
+    if (isExclude) {
+      resultConfirm = await showConfirmation(
+        "Confirma a exclusão da Atividade?",
+      );
+    }
+
+    if (!isExclude || (isExclude && resultConfirm)) {
+      formData.append("intent", intent);
+
+      showLoading("Processando", async () => {
+        const result = await createOrUpdateActivity(formData);
+
+        if (result.success) {
+          onFinishAction();
+        } else {
+          setError(result.error as string);
+        }
+      });
     }
   };
 
@@ -72,9 +98,10 @@ export default function ActivityForm({
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-[#111318] rounded-lg">
+      {loading}
+      {confirm}
       <div className="mt-10 mx-auto w-full max-w-sm">
-        <form action={handleSubmit} className="space-y-6">
-          <Loading label="Processando" />
+        <form onSubmit={handleSubmit} className="space-y-6">
           <input type="hidden" id="id" name="id" value={id ?? ""} />
           <input type="hidden" id="lat" name="lat" value={location.lat ?? ""} />
           <input type="hidden" id="lng" name="lng" value={location.lng ?? ""} />

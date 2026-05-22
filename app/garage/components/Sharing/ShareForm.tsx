@@ -5,7 +5,7 @@ import { InputField } from "@/components/ui/InputField";
 import { Share2Icon } from "lucide-react";
 import { useState } from "react";
 import { Sharings } from "./Sharings";
-import { Loading } from "@/components/ui/Loading";
+import { useLoading } from "@/components/hooks/useLoading";
 
 export function ShareForm({
   id,
@@ -15,22 +15,29 @@ export function ShareForm({
   onFinishAction?: () => void;
 }) {
   const [error, setError] = useState("");
+  const [loading, showLoading] = useLoading();
 
-  const handleSubmit = async (formData: FormData) => {
-    const result = await createShareVehicle(formData);
+  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    if (result.success && onFinishAction) {
-      onFinishAction();
-    } else {
-      setError(result.error as string);
-    }
+    const formData = new FormData(event.currentTarget);
+
+    showLoading("Processando", async () => {
+      const result = await createShareVehicle(formData);
+
+      if (result.success && onFinishAction) {
+        onFinishAction();
+      } else {
+        setError(result.error as string);
+      }
+    });
   };
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 bg-[#111318] rounded-lg items-center">
       <div className="mt-10 mx-auto w-full max-w-sm">
-        <form action={handleSubmit} className="space-y-6">
-          <Loading label="Processando" />
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {loading}
           <input type="hidden" id="id" name="id" value={id ?? ""} />
           <div>
             <InputField

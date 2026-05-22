@@ -3,6 +3,7 @@
 import { CarIcon } from "lucide-react";
 import { acceptInvite } from "@/actions/vehicles";
 import { useRouter } from "next/navigation";
+import { useLoading } from "@/components/hooks/useLoading";
 
 interface VehicleItemProps {
   recordId: string;
@@ -18,6 +19,7 @@ interface VehicleItemProps {
 
 export function Vehicle(props: VehicleItemProps) {
   const router = useRouter();
+  const [loading, showLoading] = useLoading();
 
   const {
     recordId,
@@ -32,12 +34,15 @@ export function Vehicle(props: VehicleItemProps) {
   } = props;
 
   const handleAcceptInvite = async (id: string) => {
-    await acceptInvite(id);
-    router.refresh();
+    showLoading("Processando", async () => {
+      await acceptInvite(id);
+      router.refresh();
+    });
   };
 
   return (
     <li key={recordId} className="flex flex-col">
+      {loading}
       <div className="flex" onClick={() => onClick(recordId)}>
         <div className="flex flex-col mr-5">
           <div className="flex justify-center">

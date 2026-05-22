@@ -1,28 +1,34 @@
 "use client";
 
 import { login } from "@/actions/auth";
-import { Loading } from "@/components/ui/Loading";
+import { useLoading } from "@/components/hooks/useLoading";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Login() {
   const router = useRouter();
+  const [loading, showLoading] = useLoading();
   const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(formData: FormData) {
-    setError(null);
-    const result = await login(formData);
+  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    if (result?.error) {
-      setError(result.error);
-      setTimeout(() => {
-        setError(null);
-      }, 5000);
-    } else {
-      router.refresh();
-    }
-  }
+    const formData = new FormData(event.currentTarget);
+
+    showLoading("Processando", async () => {
+      const result = await login(formData);
+
+      if (result?.error) {
+        setError(result.error);
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
+      } else {
+        router.refresh();
+      }
+    });
+  };
 
   async function registerSW() {
     if ("serviceWorker" in navigator) {
@@ -37,6 +43,7 @@ export default function Login() {
 
   return (
     <>
+      {loading}
       <div className="flex flex-1 flex-col px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <Image
@@ -53,8 +60,7 @@ export default function Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action={handleSubmit} className="space-y-6">
-            <Loading label="Processando" />
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
                 htmlFor="email"

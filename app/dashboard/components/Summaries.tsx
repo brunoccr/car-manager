@@ -3,6 +3,7 @@
 import { getSummaries } from "@/actions/summaries";
 import { formatNumber } from "@components/utils/formats";
 import { BellIcon, FuelIcon, GaugeIcon, WrenchIcon } from "lucide-react";
+import { Reminders } from "./Reminders";
 
 export async function Summaries({ filter }: { filter: string }) {
   const result = await getSummaries(filter);
@@ -25,10 +26,7 @@ export async function Summaries({ filter }: { filter: string }) {
           <div className="bg-[#022f5c] p-2 rounded-lg">
             <BellIcon fill="#a7cafd" color="#a7cafd" />
           </div>
-          <div>
-            <div className="text-[0.7rem] text-gray-400">Lembretes</div>
-            <div className="text-xs font-bold">Nenhum</div>
-          </div>
+          <Reminders />
         </div>
       </div>
       <div className="flex flex-col items-center justify-center h-30 bg-[#1e2024] rounded-base rounded-2xl">

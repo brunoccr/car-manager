@@ -1,7 +1,7 @@
 "use client";
 
 import { recoverPassword } from "@/actions/auth";
-import { Loading } from "@/components/ui/Loading";
+import { useLoading } from "@/components/hooks/useLoading";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -9,26 +9,33 @@ import { useState } from "react";
 export default function Remember() {
   const router = useRouter();
   const [message, setMessage] = useState<string | null>(null);
+  const [loading, showLoading] = useLoading();
 
-  async function handleSubmit(formData: FormData) {
-    setMessage(null);
-    const result = await recoverPassword(formData);
+  const handleSubmit = async (event: React.SubmitEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    if (result?.error) {
-      setMessage(result.error);
-      setTimeout(() => {
-        setMessage(null);
-      }, 5000);
-    } else {
-      setMessage("Link de recuperação enviado para o e-mail!");
-      setTimeout(() => {
-        router.push("/login");
-      }, 5000);
-    }
-  }
+    const formData = new FormData(event.currentTarget);
+
+    showLoading("Processando", async () => {
+      const result = await recoverPassword(formData);
+
+      if (result?.error) {
+        setMessage(result.error);
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
+      } else {
+        setMessage("Link de recuperação enviado para o e-mail!");
+        setTimeout(() => {
+          router.push("/login");
+        }, 5000);
+      }
+    });
+  };
 
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+      {loading}
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <Image
           src="/icon-192x192.png"
@@ -44,8 +51,7 @@ export default function Remember() {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form action={handleSubmit} className="space-y-6">
-          <Loading label="Processando" />
+        <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label
               htmlFor="email"

@@ -18,15 +18,19 @@ export async function disableRelation(relationId: string) {
   }
 }
 
-export async function getRelations(carId: string) {
+export async function getRelations(carId: string, onlyActives: boolean = true) {
   const pb = await createServerClient();
 
   try {
     const relations = await pb.collection("relations").getFullList({
       expand: "user,car",
-      filter: pb.filter("car = {:carId} && type = 'invited' && active = true", {
-        carId,
-      }),
+      filter: pb.filter(
+        "car = {:carId} && type = 'invited' && active = {:active}",
+        {
+          carId,
+          active: onlyActives,
+        },
+      ),
     });
 
     return relations;
