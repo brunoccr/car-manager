@@ -48,7 +48,7 @@ export default function VehicleForm({
     }
 
     if (!isExclude || (isExclude && resultConfirm)) {
-      formData.append("intent", intent);
+      formData.append("intent", intent || "");
 
       showLoading("Processando", async () => {
         const result = await createOrUpdateVehicle(formData);
