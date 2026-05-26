@@ -11,10 +11,12 @@ export default function AppDrawer({
   title,
   subtitle,
   showFilter = true,
+  onFilterChangeAction = () => {},
 }: {
   title: string;
   subtitle?: string;
   showFilter?: boolean;
+  onFilterChangeAction?: (filter: string) => void;
 }) {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState<AuthRecord>(null);
@@ -34,6 +36,7 @@ export default function AppDrawer({
       subtitle={subtitle}
       username={userInfo?.name}
       showFilter={showFilter}
+      onFilterChange={onFilterChangeAction}
     >
       <DrawerItem title="Início" route="/dashboard" icon={<HomeIcon />} />
       <DrawerItem

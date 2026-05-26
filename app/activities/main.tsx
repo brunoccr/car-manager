@@ -8,12 +8,14 @@ import { FloatButton } from "@/components/ui/FloatButton";
 import { Popup } from "@/components/ui/PopupNew";
 import { useRouter } from "next/navigation";
 import { Values } from "@/consts/ActivitiesFilter";
+import { useCookie } from "@/components/hooks/useCookie";
 
 export default function ActivitiesMain({
   children,
 }: {
   children: ReactNode | ReactNode[];
 }) {
+  const [dateFilter, setDateFilter] = useCookie("date_filter", "this_month");
   const [modeNew, setModeNew] = useState(false);
   const router = useRouter();
 
@@ -25,7 +27,11 @@ export default function ActivitiesMain({
   return (
     <FilterProvider>
       <div>
-        <AppDrawer title="Atividades" subtitle={Values["this_month"]} />
+        <AppDrawer
+          title="Atividades"
+          subtitle={Values[dateFilter]}
+          onFilterChangeAction={(filter) => setDateFilter(filter)}
+        />
         <div className="flex flex-col items-center">{children}</div>
         <FloatButton onClick={() => setModeNew(true)} />
         {modeNew && (

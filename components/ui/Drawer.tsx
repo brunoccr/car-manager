@@ -11,6 +11,7 @@ export interface DrawerProps {
   subtitle?: string;
   username: string;
   showFilter?: boolean;
+  onFilterChange?: (filter: string) => void;
   children: ReactNode | ReactNode[];
 }
 
@@ -60,8 +61,8 @@ export const Drawer = ({
   username = "[USERNAME]",
   children,
   showFilter = true,
+  onFilterChange = () => {},
 }: DrawerProps) => {
-  const [stateSubtitle, setSubtitle] = useState(subtitle);
   const [isOpen, setIsOpen] = useState(false);
 
   const router = useRouter();
@@ -92,10 +93,11 @@ export const Drawer = ({
     }
   };
 
-  const handleFilter = (filterKey: string) => {
-    setSubtitle(Values[filterKey]);
+  const handleFilter = (filter: string) => {
+    if (onFilterChange) {
+      onFilterChange(filter);
+    }
 
-    router.push(`?filter=${filterKey}`);
     router.refresh();
   };
 
@@ -122,15 +124,13 @@ export const Drawer = ({
           </div>
           {/******** Título e Subtítulo *******/}
           <div className="flex-1 flex flex-col">
-            <span
-              className={`font-bold ${stateSubtitle ? "text-base" : "text-xl"}`}
-            >
+            <span className={`font-bold ${subtitle ? "text-base" : "text-xl"}`}>
               {title}
             </span>
             <span
-              className={`text-xs text-gray-400 ${!stateSubtitle ? "hidden" : ""} `}
+              className={`text-xs text-gray-400 ${!subtitle ? "hidden" : ""} `}
             >
-              {stateSubtitle}
+              {subtitle}
             </span>
           </div>
           {/******** Filtro *******/}
