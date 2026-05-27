@@ -5,8 +5,14 @@ import { formatNumber } from "@components/utils/formats";
 import { BellIcon, FuelIcon, GaugeIcon, WrenchIcon } from "lucide-react";
 import { Reminders } from "./Reminders";
 
-export async function Summaries({ filter }: { filter: string }) {
-  const result = await getSummaries(filter);
+export async function Summaries({
+  filter,
+  carFilter,
+}: {
+  filter: string;
+  carFilter: string;
+}) {
+  const result = await getSummaries(filter, carFilter);
 
   return (
     <div className="flex flex-col p-5 gap-5 w-full max-w-3xl">

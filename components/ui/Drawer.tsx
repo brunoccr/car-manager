@@ -5,13 +5,23 @@ import { MouseEventHandler, ReactNode, useEffect, useState } from "react";
 import { ButtonMenu, ButtonMenuItem } from "@components/ui/ButtonMenu";
 import { Values } from "@consts/ActivitiesFilter";
 import { useRouter } from "next/navigation";
+import { CarFrontIcon } from "lucide-react";
+import { useCookie } from "../hooks/useCookie";
+
+export interface Vehicle {
+  id: string;
+  name: string;
+}
 
 export interface DrawerProps {
   title: string;
   subtitle?: string;
   username: string;
   showFilter?: boolean;
+  showFilterCar?: boolean;
+  vehicles?: Vehicle[];
   onFilterChange?: (filter: string) => void;
+  onVehicleChange?: (carId: string) => void;
   children: ReactNode | ReactNode[];
 }
 
@@ -61,11 +71,17 @@ export const Drawer = ({
   username = "[USERNAME]",
   children,
   showFilter = true,
+  showFilterCar = true,
+  vehicles = [],
   onFilterChange = () => {},
+  onVehicleChange = () => {},
 }: DrawerProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [carFilter, setCarFilter] = useCookie("car_filter", "all");
 
   const router = useRouter();
+
+  const selectedFilter = vehicles.find((v) => v.id === carFilter)?.name;
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -97,6 +113,12 @@ export const Drawer = ({
     if (onFilterChange) {
       onFilterChange(filter);
     }
+
+    router.refresh();
+  };
+
+  const handleCarChange = (carId: string) => {
+    setCarFilter(carId);
 
     router.refresh();
   };
@@ -133,6 +155,32 @@ export const Drawer = ({
               {subtitle}
             </span>
           </div>
+          {/******** Filtro de Veículo *******/}
+          {showFilterCar && vehicles.length > 1 && (
+            <div className="flex items-center gap-5">
+              {carFilter !== "all" && <div>{selectedFilter}</div>}
+              <ButtonMenu
+                content={
+                  <div className="flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none relative">
+                    <CarFrontIcon />
+                  </div>
+                }
+              >
+                <ButtonMenuItem
+                  key="all"
+                  label="Todos"
+                  onClick={() => handleCarChange("all")}
+                />
+                {vehicles.map((v) => (
+                  <ButtonMenuItem
+                    key={v.id}
+                    label={v.name}
+                    onClick={() => handleCarChange(v.id)}
+                  />
+                ))}
+              </ButtonMenu>
+            </div>
+          )}
           {/******** Filtro *******/}
           {showFilter && (
             <div>

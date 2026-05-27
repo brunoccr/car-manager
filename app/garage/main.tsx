@@ -22,7 +22,7 @@ export default function GarageMain({
 
   return (
     <div>
-      <AppDrawer title="Garagem" showFilter={false} />
+      <AppDrawer title="Garagem" showFilter={false} showFilterCar={false} />
       <div className="flex flex-col items-center">{children}</div>
       <FloatButton onClick={() => setModeNew(true)} />
       {modeNew && (

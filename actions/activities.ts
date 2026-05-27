@@ -23,11 +23,18 @@ export async function getActivity(id: string): Promise<RecordModel | null> {
   return null;
 }
 
-export async function getActivities(filter: string): Promise<RecordModel[]> {
+export async function getActivities(
+  filter: string,
+  carFilter: string,
+): Promise<RecordModel[]> {
   const pb = await createServerClient();
 
   try {
-    const query = convertFilterDateToQuery(filter);
+    let query = convertFilterDateToQuery(filter);
+
+    if (carFilter !== "all") {
+      query += ` && car = "${carFilter}"`;
+    }
 
     const activities = await pb.collection("activities").getFullList({
       filter: `${query}`,

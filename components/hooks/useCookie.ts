@@ -43,7 +43,7 @@ export function useCookie(
   value?: string,
 ): [string, (value: string) => void] {
   const [cookieName] = useState<string>(name);
-  const [cookieValue, setCookieValue] = useState<string>("");
+  const [cookieValue, setCookieValue] = useState<string>(value || "");
 
   useEffect(() => {
     const currentValue = getCookieUtil(cookieName);

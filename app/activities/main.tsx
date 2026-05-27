@@ -1,6 +1,5 @@
 "use client";
 
-import FilterProvider from "@/app/contexts/FilterProvider";
 import AppDrawer from "../components/AppDrawer";
 import ActivityForm from "./components/ActivityForm";
 import { ReactNode, useState } from "react";
@@ -25,21 +24,19 @@ export default function ActivitiesMain({
   };
 
   return (
-    <FilterProvider>
-      <div>
-        <AppDrawer
-          title="Atividades"
-          subtitle={Values[dateFilter]}
-          onFilterChangeAction={(filter) => setDateFilter(filter)}
-        />
-        <div className="flex flex-col items-center">{children}</div>
-        <FloatButton onClick={() => setModeNew(true)} />
-        {modeNew && (
-          <Popup title="Nova Atividade" onBack={() => setModeNew(false)}>
-            <ActivityForm onFinishAction={() => handleFinish()} />
-          </Popup>
-        )}
-      </div>
-    </FilterProvider>
+    <div>
+      <AppDrawer
+        title="Atividades"
+        subtitle={Values[dateFilter]}
+        onFilterChangeAction={(filter) => setDateFilter(filter)}
+      />
+      <div className="flex flex-col items-center">{children}</div>
+      <FloatButton onClick={() => setModeNew(true)} />
+      {modeNew && (
+        <Popup title="Nova Atividade" onBack={() => setModeNew(false)}>
+          <ActivityForm onFinishAction={() => handleFinish()} />
+        </Popup>
+      )}
+    </div>
   );
 }

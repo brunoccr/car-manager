@@ -28,11 +28,16 @@ interface Expense {
 
 export async function getSummaries(
   filter: string,
+  carFilter: string,
 ): Promise<GetSummariesResult> {
   const pb = await createServerClient();
 
   try {
-    const query = convertFilterDateToQuery(filter);
+    let query = convertFilterDateToQuery(filter);
+
+    if (carFilter !== "all") {
+      query += ` && car = "${carFilter}"`;
+    }
 
     let activities = await pb.collection("activities").getFullList({
       filter: `${query}`,

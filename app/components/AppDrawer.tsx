@@ -1,25 +1,26 @@
 "use client";
 
 import { Drawer, DrawerItem } from "@/components/ui/Drawer";
-import { logout, getUserInfo } from "../../actions/auth";
+import { logout, getUserInfo, GetUserInfoResult } from "../../actions/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { AuthRecord } from "pocketbase";
 import { CarIcon, HomeIcon, KeyRoundIcon, LayoutListIcon } from "lucide-react";
 
 export default function AppDrawer({
   title,
   subtitle,
   showFilter = true,
+  showFilterCar = true,
   onFilterChangeAction = () => {},
 }: {
   title: string;
   subtitle?: string;
   showFilter?: boolean;
+  showFilterCar?: boolean;
   onFilterChangeAction?: (filter: string) => void;
 }) {
   const router = useRouter();
-  const [userInfo, setUserInfo] = useState<AuthRecord>(null);
+  const [userInfo, setUserInfo] = useState<GetUserInfoResult | null>(null);
 
   useEffect(() => {
     getUserInfo().then((info) => setUserInfo(info));
@@ -34,8 +35,10 @@ export default function AppDrawer({
     <Drawer
       title={title}
       subtitle={subtitle}
-      username={userInfo?.name}
+      username={userInfo?.name || ""}
+      vehicles={userInfo?.vehicles}
       showFilter={showFilter}
+      showFilterCar={showFilterCar}
       onFilterChange={onFilterChangeAction}
     >
       <DrawerItem title="Início" route="/dashboard" icon={<HomeIcon />} />

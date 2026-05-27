@@ -1,6 +1,7 @@
 "use client";
 
 import { formatDate, formatNumber } from "@components/utils/formats";
+import { stringToHexColor, getContrastColor } from "@components/utils/colors";
 import { FuelIcon, WrenchIcon } from "lucide-react";
 
 interface ActivityItemProps {
@@ -34,6 +35,9 @@ export function Activity(props: ActivityItemProps) {
     isLast,
   } = props;
 
+  const bgColor = stringToHexColor(carName);
+  const textColor = getContrastColor(bgColor);
+
   return (
     <li
       key={recordId}
@@ -62,7 +66,12 @@ export function Activity(props: ActivityItemProps) {
                 : " (Parcial)"
               : ""}
           </div>
-          <div className="bg-indigo-500 pr-2 pl-2 rounded-sm">{carName}</div>
+          <div
+            style={{ backgroundColor: bgColor, color: textColor }}
+            className={`pr-2 pl-2 rounded-sm`}
+          >
+            {carName}
+          </div>
         </div>
         <div>
           <div className="flex flex-col w-full gap-1 text-gray-500">

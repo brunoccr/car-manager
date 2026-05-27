@@ -3,6 +3,7 @@
 import { createServerClient } from "@/lib/pocketbase";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { getUserVehicles } from "./vehicles";
 
 export async function changePassword(formData: FormData) {
   const pb = await createServerClient();
@@ -57,10 +58,25 @@ export async function confirmChangePassword(formData: FormData) {
   return { success: true };
 }
 
-export async function getUserInfo() {
+export interface GetUserInfoResult {
+  name: string;
+  vehicles: { id: string; name: string }[];
+}
+
+export async function getUserInfo(): Promise<GetUserInfoResult> {
   const pb = await createServerClient();
 
-  return pb.authStore.record;
+  const vehicles = (await getUserVehicles())
+    .map((v) => {
+      return { id: v.value, name: v.label };
+    })
+    .sort((a, b) => {
+      if (a > b) return 1;
+      if (a < b) return -1;
+      return 0;
+    });
+
+  return { name: pb.authStore.record?.name, vehicles };
 }
 
 export async function recoverPassword(formData: FormData) {
