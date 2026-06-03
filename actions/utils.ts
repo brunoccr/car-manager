@@ -32,6 +32,31 @@ export function convertFilterDateToQuery(filter: string) {
     );
 
     return `startdate >= "${formatDate(startDate)}" && startdate <= "${formatDate(lastDate)}"`;
+  } else if (filter === "last_month") {
+    startDate = new Date(
+      Date.UTC(
+        startDate.getUTCFullYear(),
+        startDate.getUTCMonth() - 1,
+        1,
+        0,
+        0,
+        0,
+        0,
+      ),
+    );
+    lastDate = new Date(
+      Date.UTC(
+        lastDate.getUTCFullYear(),
+        lastDate.getUTCMonth(),
+        0,
+        23,
+        59,
+        59,
+        999,
+      ),
+    );
+
+    return `startdate >= "${formatDate(startDate)}" && startdate <= "${formatDate(lastDate)}"`;
   } else if (filter === "this_semester") {
     if (startDate.getMonth() < 6) {
       startDate = new Date(Date.UTC(startDate.getFullYear(), 0, 1, 0, 0, 0, 0));
